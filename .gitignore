@@ -5,10 +5,7 @@ mon-app/.pnpm-store/
 # Next.js build
 mon-app/.next/
 
-# Comic images (too large for git)
-mon-app/public/comics/
-
-# Scraper downloads
+# Scraper downloads (les comics sont dans public/comics/)
 scraper/downloads/
 
 # Python
