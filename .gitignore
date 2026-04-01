@@ -1,0 +1,27 @@
+# Dependencies
+mon-app/node_modules/
+mon-app/.pnpm-store/
+
+# Next.js build
+mon-app/.next/
+
+# Comic images (too large for git)
+mon-app/public/comics/
+
+# Scraper downloads
+scraper/downloads/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Env
+.env
+.env.local
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
