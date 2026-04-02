@@ -1,8 +1,8 @@
 {
   "lastScraped": {
     "publisherId": "dc",
-    "characterId": "greenlantern",
-    "comicId": "dc-greenlantern-green-lantern-emerald-twilight-volume-1"
+    "characterId": "batman",
+    "comicId": "dc-batman-anneeun-batman-annee-un-volume-1"
   },
   "publishers": [
     {
@@ -99,6 +99,24 @@
           "order": 8,
           "description": "L'ère Geoff Johns se conclut avec la Guerre des Green Lanterns. Les Gardiens de l'Univers, corrompus par leurs propres peurs, déclenchent un conflit qui oppose les membres du Corps entre eux. Un final dévastateur qui referme dix ans de récits et prépare le terrain pour une nouvelle génération.",
           "pagesFile": "dc/greenlantern/geoffjohns/Volume 7"
+        }
+      ]
+    },
+    {
+      "id": "batman",
+      "publisherId": "dc",
+      "name": "Batman",
+      "realName": "Bruce Wayne",
+      "image": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads61%2FBatmanAnneeUnTome1-001.jpg",
+      "comics": [
+        {
+          "id": "dc-batman-anneeun-batman-annee-un-volume-1",
+          "title": "Batman : Année Un",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads61%2FBatmanAnneeUnTome1-001.jpg",
+          "year": 1987,
+          "order": 1,
+          "description": "Cette histoire est un retour au fonds du personnage de Batman, avec un Batman qui est encore jeune et qui doit apprendre à devenir le héros que le monde attend de lui.",
+          "pagesFile": "dc/batman/anneeun/batman-annee-un-volume-1"
         }
       ]
     }

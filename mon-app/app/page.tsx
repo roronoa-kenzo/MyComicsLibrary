@@ -15,7 +15,7 @@ export default function Home() {
         <section className="relative min-h-screen flex items-center pt-20">
           {/* Background cover blurred */}
           <div
-            className="absolute inset-0 bg-cover bg-center opacity-10"
+            className="absolute inset-0 bg-cover bg-center opacity-1"
             style={{ backgroundImage: `url(${comic.cover})` }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/95 to-zinc-950/60" />
