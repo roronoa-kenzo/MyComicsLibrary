@@ -26,7 +26,7 @@
       "publisherId": "dc",
       "name": "Green Lantern",
       "realName": "Hal Jordan",
-      "image": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads94%2FGreenLanternETTome1-001.webp",
+      "image": "https://i.pinimg.com/originals/91/04/92/910492d42415b1fa36180f1441dcac7f.jpg",
       "comics": [
         {
           "id": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
@@ -107,7 +107,7 @@
       "publisherId": "dc",
       "name": "Batman",
       "realName": "Bruce Wayne",
-      "image": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads61%2FBatmanAnneeUnTome1-001.jpg",
+      "image": "https://i.pinimg.com/originals/9e/8f/60/9e8f606af9385d4de57b946e65d9b76d.jpg",
       "comics": [
         {
           "id": "dc-batman-anneeun-batman-annee-un-volume-1",
