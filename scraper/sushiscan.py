@@ -30,7 +30,7 @@ import sys
 import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, quote
 
 import curl_cffi
 from bs4 import BeautifulSoup
@@ -112,6 +112,14 @@ async def _get_cf_clearance(url: str) -> tuple[str, str]:
 
     cookie_str = f"cf_clearance={cf_cookie.value}"
     print("  cf_clearance obtenu.")
+
+    # Persiste la session pour que le proxy Next.js puisse la réutiliser
+    session_file = Path(__file__).parent.parent / "mon-app" / "data" / "cf_session.json"
+    session_file.parent.mkdir(parents=True, exist_ok=True)
+    session_file.write_text(
+        json.dumps({"cookie": cookie_str, "userAgent": ua or DEFAULT_UA}, indent=2)
+    )
+
     return cookie_str, ua or DEFAULT_UA
 
 
@@ -312,6 +320,95 @@ def _safe(name: str) -> str:
 # Main flow
 # ---------------------------------------------------------------------------
 
+async def save_urls_to_json(
+    chapter: Chapter,
+    pages_dir: Path,
+    slug: str,
+) -> str | None:
+    """Sauvegarde les URLs des pages dans un fichier JSON. Retourne la première URL."""
+    pages_dir.mkdir(parents=True, exist_ok=True)
+    urls = [p.url for p in chapter.pages]
+    out = pages_dir / f"{slug}.json"
+    out.write_text(json.dumps(urls, indent=2, ensure_ascii=False))
+    print(f"  ✓ {len(urls)} URLs → {out}")
+    return urls[0] if urls else None
+
+
+def _sync_library(
+    pagesfile_key: str,
+    first_url: str,
+    manga_title: str,
+    chapter_title: str,
+    char_id: str,
+    publisher_id: str,
+    library_path: Path,
+) -> None:
+    """Crée ou met à jour le personnage et le comic dans library.json."""
+    if library_path.exists():
+        data = json.loads(library_path.read_text(encoding="utf-8"))
+    else:
+        data = {
+            "lastScraped": {"publisherId": publisher_id, "characterId": char_id, "comicId": ""},
+            "publishers": [],
+            "characters": [],
+        }
+
+    proxy_cover = f"/api/img?url={quote(first_url, safe='')}"
+
+    # ── Personnage ──────────────────────────────────────────────────────────
+    char_entry: dict | None = next(
+        (c for c in data["characters"] if c["id"] == char_id), None
+    )
+    if char_entry is None:
+        char_entry = {
+            "id": char_id,
+            "publisherId": publisher_id,
+            "name": char_id.capitalize(),
+            "realName": "TODO",
+            "image": proxy_cover,
+            "comics": [],
+        }
+        data["characters"].append(char_entry)
+        print(f"  ✓ Nouveau personnage : {char_id}  (pense à renseigner name/realName)")
+    elif char_entry.get("image", "").startswith("/comics/"):
+        char_entry["image"] = proxy_cover
+
+    # ── Comic ────────────────────────────────────────────────────────────────
+    comic_id = re.sub(r"[/ ]+", "-", pagesfile_key).lower().strip("-")
+    comic_entry: dict | None = next(
+        (c for c in char_entry["comics"] if c.get("pagesFile") == pagesfile_key),
+        None,
+    )
+
+    if comic_entry is None:
+        comic_entry = {
+            "id": comic_id,
+            "title": f"{manga_title} – {chapter_title}",
+            "cover": proxy_cover,
+            "year": 0,
+            "order": 0,
+            "description": "TODO",
+            "pagesFile": pagesfile_key,
+        }
+        char_entry["comics"].append(comic_entry)
+        print(f"  ✓ Nouveau comic : {comic_id}  (pense à renseigner year/order/description)")
+    else:
+        comic_entry["cover"] = proxy_cover
+        print(f"  ✓ Comic mis à jour : {comic_entry['id']}")
+
+    data["lastScraped"] = {
+        "publisherId": char_entry["publisherId"],
+        "characterId": char_id,
+        "comicId": comic_entry["id"],
+    }
+
+    library_path.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    print(f"  ✓ library.json synchronisé")
+
+
 async def run(
     url: str,
     output_dir: Path,
@@ -319,6 +416,10 @@ async def run(
     save_as: str,
     cookie: str | None,
     user_agent: str | None,
+    urls_only: bool = False,
+    pages_dir: Path | None = None,
+    char_path: str = "",
+    publisher_id: str = "dc",
 ) -> None:
     # ── Obtenir le cookie cf_clearance ──────────────────────────────────────
     if not cookie:
@@ -355,6 +456,26 @@ async def run(
 
             print(f"  {len(chapter.pages)} pages")
             safe_ch = _safe(chapter.title)
+
+            if urls_only:
+                base_dir = pages_dir or (output_dir / _safe(manga.title))
+                out_dir = (base_dir / Path(char_path)) if char_path else base_dir
+                pagesfile_key = f"{char_path}/{safe_ch}" if char_path else safe_ch
+                parts = char_path.split("/")
+                char_id = parts[1] if len(parts) > 1 else parts[0] if parts else ""
+                first_url = await save_urls_to_json(chapter, out_dir, safe_ch)
+                if first_url and char_id:
+                    library_path = Path(__file__).parent.parent / "mon-app" / "data" / "library.json"
+                    _sync_library(
+                        pagesfile_key=pagesfile_key,
+                        first_url=first_url,
+                        manga_title=manga.title,
+                        chapter_title=chapter.title,
+                        char_id=char_id,
+                        publisher_id=publisher_id,
+                        library_path=library_path,
+                    )
+                continue
 
             if save_as == "raw":
                 dest = base_path / safe_ch
@@ -421,9 +542,40 @@ def main() -> None:
         "--user-agent",
         help="User-Agent (doit correspondre au navigateur du cookie si fourni)",
     )
+    parser.add_argument(
+        "--urls-only",
+        action="store_true",
+        help="Enregistre uniquement les URLs des pages (JSON) sans télécharger les images",
+    )
+    parser.add_argument(
+        "--pages-dir",
+        default="../mon-app/data/pages",
+        help="Dossier de sortie des JSON d'URLs (défaut : ../mon-app/data/pages)",
+    )
+    parser.add_argument(
+        "--character",
+        nargs="+",
+        metavar="NAME",
+        help=(
+            "Sous-dossier(s) dans data/pages/ pour organiser les comics. "
+            "Ex: --character greenlantern  →  pages/greenlantern/<slug>.json\n"
+            "    --character greenlantern geoffjohns  →  pages/greenlantern/geoffjohns/<slug>.json"
+        ),
+    )
+    parser.add_argument(
+        "--publisher",
+        default="dc",
+        help="ID de l'éditeur dans library.json (défaut : dc)",
+    )
     args = parser.parse_args()
 
+    if args.urls_only and not args.character:
+        parser.error("--character est requis avec --urls-only.\nEx: --character greenlantern  ou  --character greenlantern geoffjohns")
+
     output_dir = Path(args.output).expanduser().resolve()
+    pages_dir = Path(args.pages_dir).expanduser().resolve()
+    char_parts = [_safe(p.lower()) for p in args.character] if args.character else []
+    char_path = "/".join([args.publisher] + char_parts) if char_parts else ""
 
     try:
         asyncio.run(run(
@@ -433,6 +585,10 @@ def main() -> None:
             save_as=args.save_as,
             cookie=args.cookie,
             user_agent=args.user_agent,
+            urls_only=args.urls_only,
+            pages_dir=pages_dir if args.urls_only else None,
+            char_path=char_path,
+            publisher_id=args.publisher,
         ))
     except KeyboardInterrupt:
         print("\nAnnulé.")

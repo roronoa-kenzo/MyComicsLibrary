@@ -1,8 +1,8 @@
 {
   "lastScraped": {
     "publisherId": "dc",
-    "characterId": "green-lantern",
-    "comicId": "geoff-johns-volume-1"
+    "characterId": "greenlantern",
+    "comicId": "dc-greenlantern-green-lantern-emerald-twilight-volume-1"
   },
   "publishers": [
     {
@@ -22,99 +22,83 @@
   ],
   "characters": [
     {
-      "id": "green-lantern",
+      "id": "greenlantern",
       "publisherId": "dc",
       "name": "Green Lantern",
       "realName": "Hal Jordan",
-      "image": "/comics/green-lantern-emerald-twilight-volume-1/0001.webp",
+      "image": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads94%2FGreenLanternETTome1-001.webp",
       "comics": [
         {
-          "id": "emerald-twilight-volume-1",
+          "id": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
           "title": "Emerald Twilight – Volume 1",
-          "cover": "/comics/green-lantern-emerald-twilight-volume-1/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads94%2FGreenLanternETTome1-001.webp",
           "year": 1994,
           "order": 1,
-          "pageExtension": "webp",
           "description": "Dans ce run légendaire, Hal Jordan — le Green Lantern le plus puissant de la Terre — est anéanti par la destruction de Coast City par Mongul et le Cyborg-Superman. Submergé par le deuil et la folie, il entame un voyage brutal à travers l'espace pour s'emparer de tous les anneaux de pouvoir des Green Lanterns sur son passage. Un tournant majeur et déchirant de l'univers DC.",
-          "pagesDir": "green-lantern-emerald-twilight-volume-1",
-          "pageCount": 254
+          "pagesFile": "dc/greenlantern/green-lantern-emerald-twilight-volume-1"
         },
         {
-          "id": "geoff-johns-volume-1",
+          "id": "dc-greenlantern-geoffjohns-volume-1",
           "title": "Geoff Johns présente Green Lantern – Volume 1",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 1/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome1-001.webp",
           "year": 2004,
           "order": 2,
-          "pageExtension": "webp",
           "description": "Hal Jordan revient d'entre les morts et reprend son anneau de pouvoir. Ce premier volume du run définitif de Geoff Johns pose les bases d'une nouvelle ère pour le Green Lantern Corps, avec le retour de Sinestro comme grand antagoniste et les prémices de la guerre des couleurs qui s'annonce.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 1",
-          "pageCount": 476
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 1"
         },
         {
-          "id": "geoff-johns-volume-2",
+          "id": "dc-greenlantern-geoffjohns-volume-2",
           "title": "Geoff Johns présente Green Lantern – Volume 2",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 2/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome2-001.webp",
           "year": 2005,
           "order": 3,
-          "pageExtension": "webp",
           "description": "Hal Jordan affronte d'anciens Green Lanterns corrompus qui cherchent à se venger du Corps. Pendant ce temps, les Gardiens dissimulent de sombres secrets sur l'origine du Corps et la nature du Parallax. Un arc haletant qui révèle les failles profondes au sein de l'institution.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 2",
-          "pageCount": 466
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 2"
         },
         {
-          "id": "geoff-johns-volume-3",
+          "id": "dc-greenlantern-geoffjohns-volume-3",
           "title": "Geoff Johns présente Green Lantern – Volume 3",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 3/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome3-001.webp",
           "year": 2006,
           "order": 4,
-          "pageExtension": "webp",
           "description": "Hal Jordan est pourchassé par le gouvernement américain alors que des accusations passées refont surface. Parallèlement, Sinestro forge ses propres anneaux jaunes alimentés par la peur, réunissant une armée pour défier le Corps Vert dans ce qui sera le prélude de la Sinestro Corps War.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 3",
-          "pageCount": 426
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 3"
         },
         {
-          "id": "geoff-johns-volume-4",
+          "id": "dc-greenlantern-geoffjohns-volume-4",
           "title": "Geoff Johns présente Green Lantern – Volume 4",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 4/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome4-001.webp",
           "year": 2007,
           "order": 5,
-          "pageExtension": "webp",
           "description": "La guerre du Corps Sinestro éclate dans toute son ampleur. Sinestro et ses légions de la peur envahissent la Terre et l'espace connu. Le Green Lantern Corps doit briser ses propres lois pour survivre dans l'un des événements les plus épiques de l'histoire DC.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 4",
-          "pageCount": 517
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 4"
         },
         {
-          "id": "geoff-johns-volume-5",
+          "id": "dc-greenlantern-geoffjohns-volume-5",
           "title": "Geoff Johns présente Green Lantern – Volume 5",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 5/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome5-001.webp",
           "year": 2008,
           "order": 6,
-          "pageExtension": "webp",
           "description": "L'origine secrète de Hal Jordan est enfin révélée, de son enfance traumatisante à son premier contact avec un anneau de pouvoir. Puis le spectre de la Blackest Night se précise avec l'émergence des Lanternes Rouges et d'Agent Orange, annonçant une guerre cosmique entre toutes les émotions de l'univers.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 5",
-          "pageCount": 470
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 5"
         },
         {
-          "id": "geoff-johns-volume-6",
+          "id": "dc-greenlantern-geoffjohns-volume-6",
           "title": "Geoff Johns présente Green Lantern – Volume 6",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 6/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome6-001.webp",
           "year": 2009,
           "order": 7,
-          "pageExtension": "webp",
           "description": "La Blackest Night commence. Les morts se relèvent à travers l'univers, portant des anneaux noirs alimentés par le vide émotionnel. Hal Jordan doit unir toutes les factions de lanternes — vertes, rouges, bleues, violettes, oranges et jaunes — pour combattre Nekron, le seigneur des morts.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 6",
-          "pageCount": 320
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 6"
         },
         {
-          "id": "geoff-johns-volume-7",
+          "id": "dc-greenlantern-geoffjohns-volume-7",
           "title": "Geoff Johns présente Green Lantern – Volume 7",
-          "cover": "/comics/Geoff Johns présente Green Lantern/Volume 7/0001.webp",
+          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome7-001.webp",
           "year": 2011,
           "order": 8,
-          "pageExtension": "webp",
           "description": "L'ère Geoff Johns se conclut avec la Guerre des Green Lanterns. Les Gardiens de l'Univers, corrompus par leurs propres peurs, déclenchent un conflit qui oppose les membres du Corps entre eux. Un final dévastateur qui referme dix ans de récits et prépare le terrain pour une nouvelle génération.",
-          "pagesDir": "Geoff Johns présente Green Lantern/Volume 7",
-          "pageCount": 308
+          "pagesFile": "dc/greenlantern/geoffjohns/Volume 7"
         }
       ]
     }

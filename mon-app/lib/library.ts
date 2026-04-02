@@ -1,3 +1,6 @@
+import "server-only";
+import fs from "fs";
+import path from "path";
 import libraryData from "@/data/library.json";
 
 export interface Comic {
@@ -7,9 +10,12 @@ export interface Comic {
   year: number;
   order: number;
   description: string;
-  pagesDir: string;
-  pageCount: number;
+  // Mode local : images dans public/comics/
+  pagesDir?: string;
+  pageCount?: number;
   pageExtension?: string;
+  // Mode URL : URLs stockées dans data/pages/<pagesFile>.json
+  pagesFile?: string;
 }
 
 export interface Character {
@@ -88,8 +94,19 @@ export function getLastScraped(): {
 }
 
 export function getComicPages(comic: Comic): string[] {
+  if (comic.pagesFile) {
+    const filePath = path.join(
+      process.cwd(),
+      "data",
+      "pages",
+      `${comic.pagesFile}.json`
+    );
+    const urls: string[] = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    return urls.map((url) => `/api/img?url=${encodeURIComponent(url)}`);
+  }
+
   const ext = comic.pageExtension ?? "webp";
-  return Array.from({ length: comic.pageCount }, (_, i) =>
+  return Array.from({ length: comic.pageCount ?? 0 }, (_, i) =>
     `/comics/${comic.pagesDir}/${String(i + 1).padStart(4, "0")}.${ext}`
   );
 }
