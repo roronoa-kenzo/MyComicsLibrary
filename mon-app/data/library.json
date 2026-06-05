@@ -1,8 +1,8 @@
 {
   "lastScraped": {
-    "publisherId": "dc",
-    "characterId": "batman",
-    "comicId": "dc-batman-amerevictoire-batman-amere-victoire-volume-1"
+    "publisherId": "marvel",
+    "characterId": "spiderman",
+    "comicId": "marvel-spiderman-integral3-spider-man-lintegrale-1966-volume-1"
   },
   "publishers": [
     {
@@ -157,6 +157,59 @@
           "storagePath": "dc/batman/amerevictoire/batman-amere-victoire-volume-1",
           "pageCount": 383,
           "pageExtension": "jpg"
+        }
+      ]
+    },
+    {
+      "id": "spiderman",
+      "publisherId": "marvel",
+      "name": "Spiderman",
+      "realName": "Peter Parker",
+      "image": "https://i.pinimg.com/736x/fc/62/8e/fc628e3bf6b304f7fb822b0c99d7d1e6.jpg",
+      "comics": [
+        {
+          "id": "marvel-spiderman-integral1-volume-1",
+          "title": "Spider-man – L’Intégrale : 1962-1963",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/marvel/spiderman/integral1/Volume%201/0001.jpg",
+          "year": 1962,
+          "order": 1,
+          "description": "Timide, introverti et rejeté par ses camarades, le jeune Peter Parker se consacre tout entier à la science. Un jour, il se fait mordre par une araignée radioactive qui le dote de pouvoirs extraordinaires : Spider-Man est né ! Retrouvez les premiers épisodes d’Amazing Spider-Man.",
+          "storagePath": "marvel/spiderman/integral1/Volume 1",
+          "pageCount": 229,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "marvel-spiderman-integral2-volume-1",
+          "title": "Spider-man – L’Intégrale : 1964",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/marvel/spiderman/integral2/Volume%201/0001.jpg",
+          "year": 1964,
+          "order": 2,
+          "description": "En cette année 1964, la série Amazing Spider-Man fête le retour du Docteur Octopus et nous présente de nouveaux super-vilains : Electro, Kraven, Mystério, les Sinister Six et le Bouffon Vert.",
+          "storagePath": "marvel/spiderman/integral2/Volume 1",
+          "pageCount": 336,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "marvel-spiderman-integral3-spider-man-lintegrale-1966-volume-1",
+          "title": "Spider-Man : L’intégrale 1966 : Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/marvel/spiderman/integral3/spider-man-lintegrale-1966-volume-1/0001.webp",
+          "year": 1966,
+          "order": 3,
+          "description": "Une année historique pour notre Spidey, tant au niveau des ses aventures comme éditorial ! Une fois de plus, il devra lutter contre une pléiade de super-vilains dont la 1ere apparition du Rhino, découvrira la véritable identité du Bouffon Vert qui lui-même, mettra en danger le Tisseur. Enfin, c’est aussi la passation de pouvoir entre Steve Ditko, qui signe là ces derniers épisodes chez Marvel, et John Romita Sr… Mais Stan Lee reste aux manettes ! Des instants magiques publiés il y a longtemps dans Strange, le mythique mensuel Marvel, ici en intégralité et sans censure.",
+          "storagePath": "marvel/spiderman/integral3/spider-man-lintegrale-1966-volume-1",
+          "pageCount": 290,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "marvel-spiderman-blue-volume-1",
+          "title": "Spider-Man: Bleu",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/marvel/spiderman/blue/Volume%201/0001.webp",
+          "year": 2002,
+          "order": 4,
+          "description": "C’est la Saint-Valentin et Peter Parker a le vague à l’âme. Cela fait bien longtemps que Gwen Stacy est morte, et pourtant il ne parvient pas à l’oublier. Il se remémore leur histoire, ses affrontements en tant que Spider-Man avec Kraven le Chasseur et d’autres vilains, et la fin tragique de la douce Gwen.",
+          "storagePath": "marvel/spiderman/blue/Volume 1",
+          "pageCount": 154,
+          "pageExtension": "webp"
         }
       ]
     }
