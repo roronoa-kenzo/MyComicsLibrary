@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -5,6 +6,28 @@ import CharacterCarousel from "@/components/CharacterCarousel";
 import { getPublisher, getPublisherCharacters } from "@/lib/library";
 
 type Params = Promise<{ publisher: string }>;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { publisher: publisherId } = await params;
+  const publisher = getPublisher(publisherId);
+  if (!publisher) return {};
+
+  const characters = getPublisherCharacters(publisherId);
+  return {
+    title: `${publisher.name} – Comics en ligne`,
+    description: `${publisher.tagline} Découvre ${characters.length} personnage${characters.length > 1 ? "s" : ""} et leurs comics sur The Comic Book Day.`,
+    alternates: { canonical: `/${publisherId}` },
+    openGraph: {
+      title: `${publisher.name} | The Comic Book Day`,
+      description: publisher.tagline,
+      images: [{ url: `/${publisherId}.png`, alt: publisher.name }],
+    },
+  };
+}
 
 export default async function PublisherPage({ params }: { params: Params }) {
   const { publisher: publisherId } = await params;

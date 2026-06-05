@@ -1,9 +1,33 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { getCharacter, getPublisher } from "@/lib/library";
 
 type Params = Promise<{ publisher: string; character: string }>;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { publisher: publisherId, character: characterId } = await params;
+  const publisher = getPublisher(publisherId);
+  const character = getCharacter(publisherId, characterId);
+  if (!publisher || !character) return {};
+
+  const count = character.comics.length;
+  return {
+    title: `${character.name} – ${publisher.name}`,
+    description: `Lis les comics ${character.name} (${character.realName}) chez ${publisher.name}. ${count} comic${count > 1 ? "s" : ""} disponible${count > 1 ? "s" : ""}, classés par ordre de lecture.`,
+    alternates: { canonical: `/${publisherId}/${characterId}` },
+    openGraph: {
+      title: `${character.name} | The Comic Book Day`,
+      description: character.comics[0]?.description ?? `${character.name} – ${publisher.name}`,
+      images: character.image ? [{ url: character.image, alt: character.name }] : undefined,
+    },
+  };
+}
 
 export default async function CharacterPage({ params }: { params: Params }) {
   const { publisher: publisherId, character: characterId } = await params;

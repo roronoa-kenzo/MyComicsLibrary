@@ -1,5 +1,5 @@
-import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { baseMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const geist = Geist({
@@ -7,10 +7,7 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "KenzoLibrary – Bibliothèque Comics",
-  description: "Lis tes comics DC et Marvel en ligne",
-};
+export const metadata = baseMetadata;
 
 export default function RootLayout({
   children,

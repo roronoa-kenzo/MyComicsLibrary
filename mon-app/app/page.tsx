@@ -1,6 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import WebSiteJsonLd from "@/components/WebSiteJsonLd";
 import { getAllPublishers, getLastScraped } from "@/lib/library";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
+
+export const metadata: Metadata = {
+  title: `${SITE_NAME} – Bibliothèque de comics DC & Marvel`,
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   const { publisher, character, comic } = getLastScraped();
@@ -8,6 +17,7 @@ export default function Home() {
 
   return (
     <div className="bg-zinc-950 min-h-screen">
+      <WebSiteJsonLd />
       <Navbar />
 
       {/* ── Hero : dernier comic scrappé ── */}
