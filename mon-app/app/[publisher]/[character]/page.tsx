@@ -47,8 +47,8 @@ export default async function CharacterPage({ params }: { params: Params }) {
 
           <div className="flex items-center gap-8">
             <div
-              className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0 ring-4"
-              style={{ ringColor: publisher.gradientFrom, boxShadow: `0 0 0 4px ${publisher.gradientFrom}` }}
+              className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0"
+              style={{ boxShadow: `0 0 0 4px ${publisher.gradientFrom}` }}
             >
               <img
                 src={character.image}

@@ -19,6 +19,9 @@ __pycache__/
 .env.local
 .env*.local
 
+# Session Cloudflare (cookie sensible, généré par le scraper)
+mon-app/data/cf_session.json
+
 # OS
 .DS_Store
 Thumbs.db

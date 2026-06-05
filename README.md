@@ -130,6 +130,53 @@ pnpm start      # Serveur de production
 
 ---
 
+## Déploiement en production (Vercel)
+
+L'app est dans le sous-dossier `mon-app`, et ne lit les images que via les **URLs publiques Supabase**. Aucun secret n'est nécessaire côté serveur.
+
+### 1. Importer le repo sur Vercel
+
+- **Root Directory** : `mon-app` (Project Settings → General).
+- Framework détecté automatiquement : Next.js.
+
+### 2. Variables d'environnement Vercel
+
+Ajoute **uniquement** ces deux variables (Project Settings → Environment Variables) :
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_BUCKET=comics
+```
+
+> ⚠️ Ne mets **jamais** `SUPABASE_SERVICE_KEY` sur Vercel. Elle ne sert qu'au scraper, en local.
+
+### 3. Sécuriser le bucket Supabase
+
+Le bucket `comics` est **public en lecture** (nécessaire pour afficher les images sans auth), mais l'**écriture doit être verrouillée** :
+
+- Storage → bucket `comics` → **Public bucket** : activé (lecture seule pour tout le monde).
+- **Policies** : ne crée **aucune** policy `INSERT` / `UPDATE` / `DELETE` pour les rôles `anon` ou `authenticated`.
+  Seul le scraper (clé `service_role`, qui contourne les policies) doit pouvoir uploader.
+
+Pour vérifier qu'un anonyme ne peut pas écrire (doit renvoyer une erreur 403/401) :
+
+```bash
+curl -X POST \
+  "https://xxxx.supabase.co/storage/v1/object/comics/test.txt" \
+  -H "Content-Type: text/plain" --data "hack"
+# Attendu : "new row violates row-level security policy" ou 401/403
+```
+
+### 4. Checklist sécurité
+
+- [x] `service_role` uniquement dans `scraper/.env` (gitignoré), jamais sur Vercel
+- [x] App sans secret : seules des variables `NEXT_PUBLIC_*`
+- [x] `.env`, `.env.local`, `cf_session.json` non versionnés
+- [ ] Bucket Supabase : écriture refusée pour `anon` / `authenticated`
+- [ ] Vercel : Root Directory = `mon-app` + les 2 variables `NEXT_PUBLIC_*`
+
+---
+
 ## Tuto : ajouter un comic
 
 Pré-requis : `scraper/.env` et `mon-app/.env.local` remplis (voir [Configuration Supabase](#configuration-supabase)) et le venv créé (voir [Prérequis](#prérequis)).

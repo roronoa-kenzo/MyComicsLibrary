@@ -2,7 +2,7 @@
   "lastScraped": {
     "publisherId": "dc",
     "characterId": "batman",
-    "comicId": "dc-batman-anneeun-batman-annee-un-volume-1"
+    "comicId": "dc-batman-amerevictoire-batman-amere-victoire-volume-1"
   },
   "publishers": [
     {
@@ -134,6 +134,28 @@
           "description": "Cette histoire est un retour au fonds du personnage de Batman, avec un Batman qui est encore jeune et qui doit apprendre à devenir le héros que le monde attend de lui.",
           "storagePath": "dc/batman/anneeun/batman-annee-un-volume-1",
           "pageCount": 195,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-batman-unlonghalloween-batman-un-long-halloween-volume-1",
+          "title": "Batman : Un Long Halloween",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/unlonghalloween/batman-un-long-halloween-volume-1/0001.jpg",
+          "year": 1996,
+          "order": 2,
+          "description": "Quelques mois après sa première victoire contre l’empire du crime qui phagocyte. La cité de Gotham, le vigilant Batman enquête sur une série de meurtres perpétrés uniquement lors des fêtes. Travaillant en parallèle avec le jeune procureur Harvey Dent et le Lieutenant James Gordons, le Chevalier Noir engage une course contre ce calendrier morbide qui égrène chaque mois une victime supplémentaire. Une quête dont la conclusion pourrait bien sonner la chute du plus grand espoir de Gotham, et la naissance de l’un de ses pires monstres de foire…",
+          "storagePath": "dc/batman/unlonghalloween/batman-un-long-halloween-volume-1",
+          "pageCount": 367,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-batman-amerevictoire-batman-amere-victoire-volume-1",
+          "title": "Batman : Amère Victoire : Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/amerevictoire/batman-amere-victoire-volume-1/0001.jpg",
+          "year": 1999,
+          "order": 3,
+          "description": "Un an après « l’affaire Holiday », Gotham City est toujours le théâtre de règlements de comptes entre les familles mafieuses et les « patients » de l’asile d’Arkham. Si Alberto Falcone était considéré jusqu’alors comme le véritable tueur Holiday, une nouvelle vague de meurtres jette le trouble sur son arrestation. Pour restaurer l’ordre à Gotham, Batman aura besoin de toute l’aide possible, voire de prendre sous son aile un nouveau partenaire, Robin !",
+          "storagePath": "dc/batman/amerevictoire/batman-amere-victoire-volume-1",
+          "pageCount": 383,
           "pageExtension": "jpg"
         }
       ]
