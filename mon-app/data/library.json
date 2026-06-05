@@ -31,74 +31,90 @@
         {
           "id": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
           "title": "Emerald Twilight – Volume 1",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads94%2FGreenLanternETTome1-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/green-lantern-emerald-twilight-volume-1/0001.webp",
           "year": 1994,
           "order": 1,
           "description": "Dans ce run légendaire, Hal Jordan — le Green Lantern le plus puissant de la Terre — est anéanti par la destruction de Coast City par Mongul et le Cyborg-Superman. Submergé par le deuil et la folie, il entame un voyage brutal à travers l'espace pour s'emparer de tous les anneaux de pouvoir des Green Lanterns sur son passage. Un tournant majeur et déchirant de l'univers DC.",
-          "pagesFile": "dc/greenlantern/green-lantern-emerald-twilight-volume-1"
+          "storagePath": "dc/greenlantern/green-lantern-emerald-twilight-volume-1",
+          "pageCount": 254,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-1",
           "title": "Geoff Johns présente Green Lantern – Volume 1",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome1-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%201/0001.webp",
           "year": 2004,
           "order": 2,
           "description": "Hal Jordan revient d'entre les morts et reprend son anneau de pouvoir. Ce premier volume du run définitif de Geoff Johns pose les bases d'une nouvelle ère pour le Green Lantern Corps, avec le retour de Sinestro comme grand antagoniste et les prémices de la guerre des couleurs qui s'annonce.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 1"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 1",
+          "pageCount": 476,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-2",
           "title": "Geoff Johns présente Green Lantern – Volume 2",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome2-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%202/0001.webp",
           "year": 2005,
           "order": 3,
           "description": "Hal Jordan affronte d'anciens Green Lanterns corrompus qui cherchent à se venger du Corps. Pendant ce temps, les Gardiens dissimulent de sombres secrets sur l'origine du Corps et la nature du Parallax. Un arc haletant qui révèle les failles profondes au sein de l'institution.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 2"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 2",
+          "pageCount": 466,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-3",
           "title": "Geoff Johns présente Green Lantern – Volume 3",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome3-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%203/0001.webp",
           "year": 2006,
           "order": 4,
           "description": "Hal Jordan est pourchassé par le gouvernement américain alors que des accusations passées refont surface. Parallèlement, Sinestro forge ses propres anneaux jaunes alimentés par la peur, réunissant une armée pour défier le Corps Vert dans ce qui sera le prélude de la Sinestro Corps War.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 3"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 3",
+          "pageCount": 426,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-4",
           "title": "Geoff Johns présente Green Lantern – Volume 4",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome4-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%204/0001.webp",
           "year": 2007,
           "order": 5,
           "description": "La guerre du Corps Sinestro éclate dans toute son ampleur. Sinestro et ses légions de la peur envahissent la Terre et l'espace connu. Le Green Lantern Corps doit briser ses propres lois pour survivre dans l'un des événements les plus épiques de l'histoire DC.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 4"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 4",
+          "pageCount": 517,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-5",
           "title": "Geoff Johns présente Green Lantern – Volume 5",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome5-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%205/0001.webp",
           "year": 2008,
           "order": 6,
           "description": "L'origine secrète de Hal Jordan est enfin révélée, de son enfance traumatisante à son premier contact avec un anneau de pouvoir. Puis le spectre de la Blackest Night se précise avec l'émergence des Lanternes Rouges et d'Agent Orange, annonçant une guerre cosmique entre toutes les émotions de l'univers.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 5"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 5",
+          "pageCount": 470,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-6",
           "title": "Geoff Johns présente Green Lantern – Volume 6",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome6-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%206/0001.webp",
           "year": 2009,
           "order": 7,
           "description": "La Blackest Night commence. Les morts se relèvent à travers l'univers, portant des anneaux noirs alimentés par le vide émotionnel. Hal Jordan doit unir toutes les factions de lanternes — vertes, rouges, bleues, violettes, oranges et jaunes — pour combattre Nekron, le seigneur des morts.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 6"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 6",
+          "pageCount": 320,
+          "pageExtension": "webp"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-7",
           "title": "Geoff Johns présente Green Lantern – Volume 7",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads67%2FGJPresenteGreenLanternTome7-001.webp",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/geoffjohns/Volume%207/0001.webp",
           "year": 2011,
           "order": 8,
           "description": "L'ère Geoff Johns se conclut avec la Guerre des Green Lanterns. Les Gardiens de l'Univers, corrompus par leurs propres peurs, déclenchent un conflit qui oppose les membres du Corps entre eux. Un final dévastateur qui referme dix ans de récits et prépare le terrain pour une nouvelle génération.",
-          "pagesFile": "dc/greenlantern/geoffjohns/Volume 7"
+          "storagePath": "dc/greenlantern/geoffjohns/Volume 7",
+          "pageCount": 308,
+          "pageExtension": "webp"
         }
       ]
     },
@@ -112,11 +128,13 @@
         {
           "id": "dc-batman-anneeun-batman-annee-un-volume-1",
           "title": "Batman : Année Un",
-          "cover": "/api/img?url=https%3A%2F%2Fc.sushiscan.net%2Fwp-content%2Fuploads61%2FBatmanAnneeUnTome1-001.jpg",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/anneeun/batman-annee-un-volume-1/0001.jpg",
           "year": 1987,
           "order": 1,
           "description": "Cette histoire est un retour au fonds du personnage de Batman, avec un Batman qui est encore jeune et qui doit apprendre à devenir le héros que le monde attend de lui.",
-          "pagesFile": "dc/batman/anneeun/batman-annee-un-volume-1"
+          "storagePath": "dc/batman/anneeun/batman-annee-un-volume-1",
+          "pageCount": 195,
+          "pageExtension": "jpg"
         }
       ]
     }

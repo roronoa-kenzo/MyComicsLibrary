@@ -1,25 +1,55 @@
 # KenzoLibrary
 
 Bibliothèque de comics personnelle — DC & Marvel.  
-Scrape, stocke et lit des comics depuis [sushiscan.net](https://sushiscan.net).
+Scrape des comics depuis [sushiscan.net](https://sushiscan.net), **stocke les pages dans Supabase Storage** et les lit en ligne.
+
+---
+
+## Configuration Supabase
+
+Les pages sont stockées dans un **bucket Supabase public** (organisé `éditeur/personnage/run/volume/0001.webp`).
+
+1. Créer un projet Supabase et un bucket **public** (ex. `comics`).
+2. Remplir les fichiers `.env` (non committés) :
+
+`scraper/.env` — pour uploader :
+
+```bash
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_SERVICE_KEY=...        # Settings > API > service_role
+SUPABASE_BUCKET=comics
+```
+
+`mon-app/.env.local` — pour afficher (bucket public, pas de clé) :
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_BUCKET=comics
+```
 
 ---
 
 ## Prérequis
 
-- **Python 3.10+**
-- **Node.js 18+** et **pnpm**
+- **Node.js 18+** et **pnpm** (app web)
+- **Python 3.10+** pour le scraper. `nodriver` (bypass Cloudflare) ne fonctionne **pas** en Python 3.9.
+- **Google Chrome** installé (utilisé pour le bypass Cloudflare).
+
+Le plus simple si tu n'as pas de Python récent : créer un venv 3.12 isolé avec [`uv`](https://github.com/astral-sh/uv).
 
 ```bash
-# Dépendances Python
-pip install nodriver curl_cffi beautifulsoup4 httpx
+# 1. App web
+cd mon-app && pnpm install && cd ..
 
-# Navigateur headless pour le bypass Cloudflare
-python -m playwright install chromium
-
-# Dépendances Node
-cd mon-app && pnpm install
+# 2. Scraper : venv Python 3.12 + dépendances
+pip install uv                      # ou: python3 -m pip install uv
+cd scraper
+uv venv .venv --python 3.12
+uv pip install --python .venv curl_cffi beautifulsoup4 nodriver
 ```
+
+> Le venv est dans `scraper/.venv` (gitignoré). Lance le scraper avec `./.venv/bin/python …`
+> ou active-le une fois par session : `source .venv/bin/activate` (puis `python …`).
 
 ---
 
@@ -27,39 +57,51 @@ cd mon-app && pnpm install
 
 Situé dans `scraper/sushiscan.py`. **Toujours lancer depuis le dossier `scraper/`.**
 
-### Récupérer les URLs d'un comic (recommandé)
+### Scraper un comic vers Supabase (recommandé)
+
+**Les commandes ne changent pas** : `--urls-only` télécharge désormais les pages et les **envoie sur Supabase Storage**, puis synchronise `library.json`.
 
 ```bash
 cd scraper
 
 # Un seul personnage
-python3 sushiscan.py https://sushiscan.net/catalogue/green-lantern/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/green-lantern/ \
   --urls-only --character greenlantern --volumes 1
 
-# Avec un nom de série en plus (crée pages/greenlantern/geoffjohns/)
-python3 sushiscan.py https://sushiscan.net/catalogue/geoff-johns-presente-green-lantern/ \
+# Avec un nom de série en plus (chemin greenlantern/geoffjohns/)
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/geoff-johns-presente-green-lantern/ \
   --urls-only --character greenlantern geoffjohns --volumes 1-7
 
 # Volume direct (une seule page catalogue)
-python3 sushiscan.py https://sushiscan.net/green-lantern-emerald-twilight-volume-1/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/green-lantern-emerald-twilight-volume-1/ \
   --urls-only --character greenlantern
 ```
 
 `--character` est **obligatoire** avec `--urls-only`. Il accepte 1 ou 2 noms :
 
-| Commande | Fichiers créés |
+| Commande | Chemin Supabase |
 |---|---|
-| `--character greenlantern` | `data/pages/greenlantern/<volume>.json` |
-| `--character greenlantern geoffjohns` | `data/pages/greenlantern/geoffjohns/<volume>.json` |
+| `--character greenlantern` | `dc/greenlantern/<volume>/0001.webp…` |
+| `--character greenlantern geoffjohns` | `dc/greenlantern/geoffjohns/<volume>/0001.webp…` |
 
-La cover et `lastScraped` dans `library.json` sont mis à jour automatiquement.
+La cover, `pageCount`, `pageExtension`, `storagePath` et `lastScraped` dans `library.json` sont remplis automatiquement.
 
-> Le cookie Cloudflare expire (quelques jours). Relancer le scraper le rafraîchit.
+> Le cookie Cloudflare expire (quelques jours). Le scraper le rafraîchit automatiquement
+> (Chrome s'ouvre ~15 s) si besoin, ou fournis-le à la main avec `--cookie cf_clearance=...`.
+
+### Migrer des comics déjà scrapés (ancien format)
+
+Si d'anciens comics utilisent encore `data/pages/*.json`, les envoyer sur Supabase et réécrire `library.json` :
+
+```bash
+cd scraper
+./.venv/bin/python migrate_to_supabase.py
+```
 
 ### Télécharger les images (stockage local)
 
 ```bash
-python3 sushiscan.py https://sushiscan.net/catalogue/mon-manga/ --volumes 1-3
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/mon-manga/ --volumes 1-3
 ```
 
 Les images arrivent dans `mon-app/public/comics/<titre>/<volume>/`.
@@ -71,7 +113,7 @@ Les images arrivent dans `mon-app/public/comics/<titre>/<volume>/`.
 | `--character NAME [NAME]` | — | **Requis** avec `--urls-only`. 1 ou 2 noms de dossier |
 | `--publisher ID` | `dc` | ID de l'éditeur dans `library.json` |
 | `--volumes` | `all` | Sélection : `all`, `1`, `1-3`, `1,3,5` |
-| `--urls-only` | — | Sauvegarde les URLs JSON sans télécharger |
+| `--urls-only` | — | Télécharge les pages et les envoie sur Supabase Storage |
 | `--save-as` | `raw` | Format local : `raw`, `cbz`, `pdf` |
 | `--cookie` | — | Cookie Cloudflare manuel (`cf_clearance=...`) |
 
@@ -88,54 +130,82 @@ pnpm start      # Serveur de production
 
 ---
 
-## Ajouter un comic dans la bibliothèque
+## Tuto : ajouter un comic
 
-### 1. Scraper les URLs
+Pré-requis : `scraper/.env` et `mon-app/.env.local` remplis (voir [Configuration Supabase](#configuration-supabase)) et le venv créé (voir [Prérequis](#prérequis)).
+
+### 1. Trouver l'URL sur sushiscan
+
+- **Série en plusieurs tomes** → l'URL du catalogue : `https://sushiscan.net/catalogue/<slug>/`
+- **Tome unique** → l'URL directe du volume : `https://sushiscan.net/<slug-du-volume>/`
+
+### 2. Lancer le scrape
+
+Depuis `scraper/`, avec le venv :
 
 ```bash
 cd scraper
-python3 sushiscan.py <url> --urls-only --character <perso> [<serie>] --publisher <dc|marvel> --volumes <selection>
+
+./.venv/bin/python sushiscan.py <url> \
+  --publisher <dc|marvel> \
+  --character <perso> [<serie>] \
+  --urls-only \
+  --volumes <all | 1 | 1-3 | 1,3,5>
 ```
 
-Le scraper **crée automatiquement** dans `library.json` :
-- Le personnage s'il n'existe pas encore
-- Une entrée comic par volume avec `title`, `cover`, `pagesFile` pré-remplis
+Exemple concret (Batman – Année Un, éditeur DC, perso batman, run « anneeun ») :
 
-### 2. Compléter dans `library.json`
+```bash
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/batman-annee-un/ \
+  --publisher dc --character batman anneeun --urls-only --volumes all
+```
 
-Seuls ces 3 champs restent à renseigner à la main :
+Le scraper :
+1. Récupère la liste des pages, **les télécharge, et les envoie sur Supabase** sous
+   `<publisher>/<perso>/[<run>/]<volume>/0001.webp…` (l'organisation ne change jamais).
+2. **Valide** les images : si Cloudflare renvoie des placeholders (cookie expiré), il
+   **rafraîchit le cookie tout seul** (Chrome s'ouvre ~15 s) puis réessaie.
+3. **Met à jour `library.json`** : crée le personnage si besoin et une entrée comic par
+   volume avec `title`, `cover`, `storagePath`, `pageCount`, `pageExtension` pré-remplis.
+
+### 3. Compléter `library.json`
+
+Ouvre `mon-app/data/library.json`. Pour **chaque comic** créé, renseigne les 3 champs laissés en `TODO` / à 0 :
 
 ```json
 {
-  "year": 2005,
+  "year": 1987,
   "order": 1,
-  "description": "..."
+  "description": "Résumé du comic…"
 }
 ```
 
-Et si le personnage est nouveau, ses infos d'affichage :
+`order` = ordre de lecture sur la page du personnage (tri croissant ; les valeurs n'ont pas besoin d'être consécutives).
+
+Si le **personnage** vient d'être créé, complète aussi son affichage :
 
 ```json
 {
-  "name": "Green Lantern",
-  "realName": "Hal Jordan"
-}
-```
-
-### Ajouter un personnage
-
-```json
-{
-  "id": "batman",
-  "publisherId": "dc",
   "name": "Batman",
-  "realName": "Bruce Wayne",
-  "image": "/api/img?url=...",
-  "comics": []
+  "realName": "Bruce Wayne"
 }
 ```
 
-### Ajouter un éditeur
+> L'`image` du personnage est pré-remplie avec la 1ʳᵉ page Supabase ; remplace-la par une vraie illustration si tu veux.
+
+### 4. Vérifier
+
+```bash
+cd ../mon-app && pnpm dev   # http://localhost:3000
+```
+
+Navigue jusqu'au comic et vérifie que les pages s'affichent.
+
+---
+
+### Cas particuliers
+
+**Ajouter un éditeur** — dans `library.json`, section `publishers` :
 
 ```json
 {
@@ -147,6 +217,15 @@ Et si le personnage est nouveau, ses infos d'affichage :
 }
 ```
 
+Puis dépose son logo dans `mon-app/public/<id>.png` et ajoute sa bannière dans `mon-app/app/page.tsx`.
+
+**Le cookie ne se rafraîchit pas (pas de Chrome / souci nodriver)** — récupère-le à la main :
+1. Ouvre `https://sushiscan.net/` dans Chrome (passe le check Cloudflare).
+2. DevTools → Application → Cookies → copie la valeur de `cf_clearance`.
+3. Console → `navigator.userAgent` → copie la chaîne.
+4. Mets-les dans `mon-app/data/cf_session.json` :
+   `{"cookie": "cf_clearance=...", "userAgent": "..."}`
+
 ---
 
 ## Structure du projet
@@ -154,24 +233,24 @@ Et si le personnage est nouveau, ses infos d'affichage :
 ```
 KenzoLibrary/
 ├── scraper/
-│   └── sushiscan.py          # Scraper CLI
+│   ├── sushiscan.py            # Scraper CLI → upload Supabase
+│   ├── migrate_to_supabase.py  # Migration de l'ancien format
+│   ├── .venv/                  # Python 3.12 + deps (gitignoré)
+│   └── .env                    # Clés Supabase (service_role)
 └── mon-app/
+    ├── .env.local             # URL + bucket Supabase (public)
     ├── data/
-    │   ├── library.json       # Source de vérité (éditeurs, persos, comics)
-    │   ├── pages/             # URLs JSON par comic (mode sans images)
-    │   └── cf_session.json    # Session Cloudflare (générée par le scraper)
-    ├── public/
-    │   └── comics/            # Images téléchargées (mode local)
+    │   ├── library.json        # Source de vérité (éditeurs, persos, comics)
+    │   └── cf_session.json     # Session Cloudflare (générée par le scraper)
     ├── app/
-    │   ├── page.tsx           # Accueil
-    │   ├── [publisher]/       # Page éditeur (DC, Marvel...)
-    │   │   └── [character]/   # Page personnage
-    │   │       └── [comic]/   # Lecteur
-    │   └── api/img/           # Proxy images (mode URLs)
+    │   ├── page.tsx            # Accueil
+    │   └── [publisher]/        # Page éditeur → personnage → lecteur
     ├── components/
     │   ├── Navbar.tsx
     │   ├── CharacterCarousel.tsx
     │   └── ComicReader.tsx
     └── lib/
-        └── library.ts         # Types et helpers
+        └── library.ts          # Types et helpers (URLs Supabase)
 ```
+
+> Les pages des comics vivent dans **Supabase Storage**, plus dans le repo.

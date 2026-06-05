@@ -1,6 +1,4 @@
 import "server-only";
-import fs from "fs";
-import path from "path";
 import libraryData from "@/data/library.json";
 
 export interface Comic {
@@ -10,12 +8,10 @@ export interface Comic {
   year: number;
   order: number;
   description: string;
-  // Mode local : images dans public/comics/
-  pagesDir?: string;
-  pageCount?: number;
-  pageExtension?: string;
-  // Mode URL : URLs stockées dans data/pages/<pagesFile>.json
-  pagesFile?: string;
+  // Pages stockées dans Supabase Storage : <storagePath>/0001.<ext>, 0002...
+  storagePath: string;
+  pageCount: number;
+  pageExtension: string;
 }
 
 export interface Character {
@@ -47,7 +43,7 @@ interface Library {
   characters: Character[];
 }
 
-const library = libraryData as Library;
+const library = libraryData as unknown as Library;
 
 export function getAllPublishers(): Publisher[] {
   return library.publishers;
@@ -93,20 +89,20 @@ export function getLastScraped(): {
   };
 }
 
-export function getComicPages(comic: Comic): string[] {
-  if (comic.pagesFile) {
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "pages",
-      `${comic.pagesFile}.json`
-    );
-    const urls: string[] = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-    return urls.map((url) => `/api/img?url=${encodeURIComponent(url)}`);
-  }
+function encodePath(storagePath: string): string {
+  return storagePath.split("/").map(encodeURIComponent).join("/");
+}
 
-  const ext = comic.pageExtension ?? "webp";
-  return Array.from({ length: comic.pageCount ?? 0 }, (_, i) =>
-    `/comics/${comic.pagesDir}/${String(i + 1).padStart(4, "0")}.${ext}`
+export function supabasePublicUrl(key: string): string {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const bucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
+  return `${base}/storage/v1/object/public/${bucket}/${encodePath(key)}`;
+}
+
+export function getComicPages(comic: Comic): string[] {
+  return Array.from({ length: comic.pageCount }, (_, i) =>
+    supabasePublicUrl(
+      `${comic.storagePath}/${String(i + 1).padStart(4, "0")}.${comic.pageExtension}`
+    )
   );
 }

@@ -1,5 +1,8 @@
 # Guide – Ajouter un comic à la bibliothèque
 
+> Tuto complet et à jour dans le [README](README.md#tuto--ajouter-un-comic).
+> Lance toujours le scraper via le venv Python 3.12 (`./.venv/bin/python …`).
+
 ---
 
 ## 1. Scraper les URLs du comic
@@ -10,14 +13,14 @@ Depuis le dossier `scraper/` :
 cd scraper
 
 # Catalogue avec plusieurs volumes
-python3 sushiscan.py https://sushiscan.net/catalogue/<slug>/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/<slug>/ \
   --urls-only \
   --publisher <dc|marvel> \
   --character <perso> [<serie>] \
   --volumes <selection>
 
 # Volume unique (URL directe)
-python3 sushiscan.py https://sushiscan.net/<slug-du-volume>/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/<slug-du-volume>/ \
   --urls-only \
   --publisher <dc|marvel> \
   --character <perso>
@@ -27,22 +30,24 @@ python3 sushiscan.py https://sushiscan.net/<slug-du-volume>/ \
 
 ```bash
 # Batman – tous les volumes d'une série
-python3 sushiscan.py https://sushiscan.net/catalogue/batman-annee-un/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/batman-annee-un/ \
   --urls-only --publisher dc --character batman
 
 # Spider-Man – une série en plusieurs volumes
-python3 sushiscan.py https://sushiscan.net/catalogue/the-amazing-spider-man/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/the-amazing-spider-man/ \
   --urls-only --publisher marvel --character spiderman amazingrun --volumes 1-5
 
 # Volumes spécifiques seulement
-python3 sushiscan.py https://sushiscan.net/catalogue/mon-manga/ \
+./.venv/bin/python sushiscan.py https://sushiscan.net/catalogue/mon-manga/ \
   --urls-only --publisher dc --character monperso --volumes 1,3,5
 ```
 
 **Résultat automatique :**
-- Fichiers JSON créés dans `mon-app/data/pages/<publisher>/<perso>/[<serie>/]<volume>.json`
-- Entrée créée dans `mon-app/data/library.json` (personnage + comics avec `TODO` à compléter)
+- Pages téléchargées et envoyées sur **Supabase Storage** : `<publisher>/<perso>/[<serie>/]<volume>/0001.webp…`
+- Entrée créée dans `mon-app/data/library.json` (personnage + comics avec `TODO` à compléter, `storagePath`/`pageCount`/`pageExtension` remplis)
 - Cover mise à jour automatiquement
+
+> Prérequis : `scraper/.env` renseigné (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET`). Voir le README.
 
 ---
 
@@ -100,7 +105,7 @@ Le scraper crée automatiquement le personnage. Si besoin de le créer manuellem
   "publisherId": "dc",
   "name": "Batman",
   "realName": "Bruce Wayne",
-  "image": "/api/img?url=...",
+  "image": "https://...supabase.co/storage/v1/object/public/comics/...",
   "comics": []
 }
 ```
@@ -132,7 +137,7 @@ Puis créer la page de l'éditeur en ajoutant une bannière dans `mon-app/app/pa
 Le cookie expire après quelques jours. Pour le renouveler, relancer n'importe quel scrape :
 
 ```bash
-python3 sushiscan.py <n'importe quelle url> --urls-only --publisher dc --character test
+./.venv/bin/python sushiscan.py <n'importe quelle url> --urls-only --publisher dc --character test
 ```
 
 Le cookie est mis à jour automatiquement dans `mon-app/data/cf_session.json`.

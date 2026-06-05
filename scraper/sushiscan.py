@@ -25,6 +25,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import os
 import re
 import sys
 import zipfile
@@ -127,8 +128,15 @@ async def _get_cf_clearance(url: str) -> tuple[str, str]:
 # Network helpers (curl_cffi imite Chrome au niveau TLS)
 # ---------------------------------------------------------------------------
 
+def _verify_ssl() -> bool:
+    """Vérification TLS, désactivable via SCRAPER_VERIFY_SSL=false.
+    Utile derrière un proxy/antivirus qui resigne les certificats (self-signed)."""
+    load_env()
+    return os.environ.get("SCRAPER_VERIFY_SSL", "true").strip().lower() not in ("0", "false", "no")
+
+
 def _make_session(cookie: str, user_agent: str) -> curl_cffi.Session:
-    session = curl_cffi.Session(impersonate="chrome")
+    session = curl_cffi.Session(impersonate="chrome", verify=_verify_ssl())
     session.headers.update({
         "referer": "https://sushiscan.net/",
         "user-agent": user_agent,
@@ -138,13 +146,92 @@ def _make_session(cookie: str, user_agent: str) -> curl_cffi.Session:
 
 
 def _make_async_session(cookie: str, user_agent: str) -> curl_cffi.AsyncSession:
-    session = curl_cffi.AsyncSession(impersonate="chrome")
+    session = curl_cffi.AsyncSession(impersonate="chrome", verify=_verify_ssl())
     session.headers.update({
         "referer": "https://sushiscan.net/",
         "user-agent": user_agent,
         "cookie": cookie,
     })
     return session
+
+
+# ---------------------------------------------------------------------------
+# Supabase Storage
+# ---------------------------------------------------------------------------
+
+def load_env() -> None:
+    """Charge scraper/.env dans os.environ (parser minimal, sans dépendance)."""
+    env_file = Path(__file__).parent / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        os.environ.setdefault(key.strip(), value.strip())
+
+
+@dataclass
+class Supabase:
+    url: str
+    key: str
+    bucket: str
+
+    @classmethod
+    def from_env(cls) -> "Supabase":
+        load_env()
+        url = os.environ.get("SUPABASE_URL", "").rstrip("/")
+        key = os.environ.get("SUPABASE_SERVICE_KEY", "")
+        bucket = os.environ.get("SUPABASE_BUCKET", "")
+        if not url or not key or not bucket:
+            raise RuntimeError(
+                "Configuration Supabase manquante. Renseigne SUPABASE_URL, "
+                "SUPABASE_SERVICE_KEY et SUPABASE_BUCKET dans scraper/.env"
+            )
+        return cls(url=url, key=key, bucket=bucket)
+
+    def public_url(self, key: str) -> str:
+        encoded = "/".join(quote(part) for part in key.split("/"))
+        return f"{self.url}/storage/v1/object/public/{self.bucket}/{encoded}"
+
+    def make_session(self) -> curl_cffi.AsyncSession:
+        kwargs: dict = {"verify": _verify_ssl()}
+        try:
+            from curl_cffi import CurlHttpVersion
+            kwargs["http_version"] = CurlHttpVersion.V1_1  # plus stable via proxy
+        except Exception:
+            pass
+        session = curl_cffi.AsyncSession(**kwargs)
+        session.headers.update({"authorization": f"Bearer {self.key}"})
+        return session
+
+
+def _content_type(filename: str) -> str:
+    ext = filename.rsplit(".", 1)[-1].lower()
+    return {
+        "webp": "image/webp",
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "png": "image/png",
+        "gif": "image/gif",
+    }.get(ext, "application/octet-stream")
+
+
+async def _upload_bytes(
+    up_session: curl_cffi.AsyncSession,
+    supa: Supabase,
+    key: str,
+    data: bytes,
+    content_type: str,
+) -> None:
+    encoded = "/".join(quote(part) for part in key.split("/"))
+    resp = await up_session.post(
+        f"{supa.url}/storage/v1/object/{supa.bucket}/{encoded}",
+        data=data,
+        headers={"content-type": content_type, "x-upsert": "true"},
+    )
+    resp.raise_for_status()
 
 
 # ---------------------------------------------------------------------------
@@ -320,23 +407,119 @@ def _safe(name: str) -> str:
 # Main flow
 # ---------------------------------------------------------------------------
 
-async def save_urls_to_json(
+# Seuil sous lequel une page est considérée comme un placeholder « image expirée »
+PLACEHOLDER_MAX_BYTES = 30_000
+
+
+class ExpiredCookieError(RuntimeError):
+    pass
+
+
+async def _download_all(
+    dl_session: curl_cffi.AsyncSession,
+    pages: list[Page],
+) -> list[bytes | None]:
+    """Télécharge toutes les pages en mémoire. None pour les échecs."""
+    sem = asyncio.Semaphore(8)
+    total = len(pages)
+
+    async def one(index: int, page: Page) -> bytes | None:
+        async with sem:
+            try:
+                resp = await dl_session.get(page.url)
+                resp.raise_for_status()
+                print(f"  [{index}/{total}] {page.filename}")
+                return resp.content
+            except Exception as exc:
+                print(f"  [{index}/{total}] ERREUR – {exc}")
+                return None
+
+    return await asyncio.gather(*[one(i + 1, p) for i, p in enumerate(pages)])
+
+
+def _looks_expired(blobs: list[bytes | None]) -> bool:
+    """Détecte le placeholder Cloudflare : pages quasi-identiques et petites."""
+    sizes = [len(b) for b in blobs if b]
+    if not sizes:
+        return True
+    from collections import Counter
+
+    size, count = Counter(sizes).most_common(1)[0]
+    n = len(sizes)
+    # Des images réelles n'ont quasiment jamais une taille identique en octets.
+    if count >= max(3, int(0.9 * n)):
+        return True
+    return count >= max(3, int(0.6 * n)) and size <= PLACEHOLDER_MAX_BYTES
+
+
+UPLOAD_CONCURRENCY = 4
+UPLOAD_RETRIES = 4
+
+
+async def _upload_all(
+    supa: Supabase,
+    pages: list[Page],
+    blobs: list[bytes | None],
+    storage_prefix: str,
+) -> int:
+    """Envoie les pages téléchargées sur Supabase (concurrence limitée + retries)."""
+    sem = asyncio.Semaphore(UPLOAD_CONCURRENCY)
+    up_session = supa.make_session()
+
+    async def one(page: Page, data: bytes | None) -> bool:
+        if data is None:
+            return False
+        async with sem:
+            for attempt in range(UPLOAD_RETRIES):
+                try:
+                    await _upload_bytes(
+                        up_session, supa, f"{storage_prefix}/{page.filename}",
+                        data, _content_type(page.filename),
+                    )
+                    return True
+                except Exception as exc:
+                    if attempt == UPLOAD_RETRIES - 1:
+                        print(f"  upload ERREUR {page.filename} – {exc}")
+                        return False
+                    await asyncio.sleep(1.0 * (attempt + 1))
+            return False
+
+    try:
+        results = await asyncio.gather(*[one(p, b) for p, b in zip(pages, blobs)])
+    finally:
+        res = up_session.close()
+        if asyncio.iscoroutine(res):
+            await res
+    return sum(results)
+
+
+async def upload_chapter_to_supabase(
+    dl_session: curl_cffi.AsyncSession,
+    supa: Supabase,
     chapter: Chapter,
-    pages_dir: Path,
-    slug: str,
+    storage_prefix: str,
 ) -> str | None:
-    """Sauvegarde les URLs des pages dans un fichier JSON. Retourne la première URL."""
-    pages_dir.mkdir(parents=True, exist_ok=True)
-    urls = [p.url for p in chapter.pages]
-    out = pages_dir / f"{slug}.json"
-    out.write_text(json.dumps(urls, indent=2, ensure_ascii=False))
-    print(f"  ✓ {len(urls)} URLs → {out}")
-    return urls[0] if urls else None
+    """Télécharge + valide + envoie un chapitre sur Supabase. Retourne l'URL publique de la 1ʳᵉ page."""
+    if not chapter.pages:
+        return None
+
+    blobs = await _download_all(dl_session, chapter.pages)
+    if _looks_expired(blobs):
+        raise ExpiredCookieError(
+            "Pages identiques/trop petites → cookie Cloudflare expiré. "
+            "Rafraîchis-le (relance un scrape ou --cookie cf_clearance=...) puis réessaie."
+        )
+
+    ok = await _upload_all(supa, chapter.pages, blobs, storage_prefix)
+    print(f"  ✓ {ok}/{len(chapter.pages)} pages → {supa.bucket}/{storage_prefix}")
+    return supa.public_url(f"{storage_prefix}/{chapter.pages[0].filename}")
 
 
 def _sync_library(
-    pagesfile_key: str,
-    first_url: str,
+    storage_path: str,
+    cover_url: str,
+    page_count: int,
+    page_extension: str,
     manga_title: str,
     chapter_title: str,
     char_id: str,
@@ -353,8 +536,6 @@ def _sync_library(
             "characters": [],
         }
 
-    proxy_cover = f"/api/img?url={quote(first_url, safe='')}"
-
     # ── Personnage ──────────────────────────────────────────────────────────
     char_entry: dict | None = next(
         (c for c in data["characters"] if c["id"] == char_id), None
@@ -365,18 +546,16 @@ def _sync_library(
             "publisherId": publisher_id,
             "name": char_id.capitalize(),
             "realName": "TODO",
-            "image": proxy_cover,
+            "image": cover_url,
             "comics": [],
         }
         data["characters"].append(char_entry)
         print(f"  ✓ Nouveau personnage : {char_id}  (pense à renseigner name/realName)")
-    elif char_entry.get("image", "").startswith("/comics/"):
-        char_entry["image"] = proxy_cover
 
     # ── Comic ────────────────────────────────────────────────────────────────
-    comic_id = re.sub(r"[/ ]+", "-", pagesfile_key).lower().strip("-")
+    comic_id = re.sub(r"[/ ]+", "-", storage_path).lower().strip("-")
     comic_entry: dict | None = next(
-        (c for c in char_entry["comics"] if c.get("pagesFile") == pagesfile_key),
+        (c for c in char_entry["comics"] if c.get("storagePath") == storage_path),
         None,
     )
 
@@ -384,16 +563,20 @@ def _sync_library(
         comic_entry = {
             "id": comic_id,
             "title": f"{manga_title} – {chapter_title}",
-            "cover": proxy_cover,
+            "cover": cover_url,
             "year": 0,
             "order": 0,
             "description": "TODO",
-            "pagesFile": pagesfile_key,
+            "storagePath": storage_path,
+            "pageCount": page_count,
+            "pageExtension": page_extension,
         }
         char_entry["comics"].append(comic_entry)
         print(f"  ✓ Nouveau comic : {comic_id}  (pense à renseigner year/order/description)")
     else:
-        comic_entry["cover"] = proxy_cover
+        comic_entry["cover"] = cover_url
+        comic_entry["pageCount"] = page_count
+        comic_entry["pageExtension"] = page_extension
         print(f"  ✓ Comic mis à jour : {comic_entry['id']}")
 
     data["lastScraped"] = {
@@ -421,6 +604,9 @@ async def run(
     char_path: str = "",
     publisher_id: str = "dc",
 ) -> None:
+    # ── Valider la config Supabase avant tout (échec rapide) ────────────────
+    supa = Supabase.from_env() if urls_only else None
+
     # ── Obtenir le cookie cf_clearance ──────────────────────────────────────
     if not cookie:
         cookie, user_agent = await _get_cf_clearance(url)
@@ -458,17 +644,21 @@ async def run(
             safe_ch = _safe(chapter.title)
 
             if urls_only:
-                base_dir = pages_dir or (output_dir / _safe(manga.title))
-                out_dir = (base_dir / Path(char_path)) if char_path else base_dir
-                pagesfile_key = f"{char_path}/{safe_ch}" if char_path else safe_ch
+                assert supa is not None
+                storage_path = f"{char_path}/{safe_ch}" if char_path else safe_ch
                 parts = char_path.split("/")
                 char_id = parts[1] if len(parts) > 1 else parts[0] if parts else ""
-                first_url = await save_urls_to_json(chapter, out_dir, safe_ch)
-                if first_url and char_id:
+                cover_url = await upload_chapter_to_supabase(
+                    async_session, supa, chapter, storage_path
+                )
+                page_ext = chapter.pages[0].filename.rsplit(".", 1)[-1]
+                if cover_url and char_id:
                     library_path = Path(__file__).parent.parent / "mon-app" / "data" / "library.json"
                     _sync_library(
-                        pagesfile_key=pagesfile_key,
-                        first_url=first_url,
+                        storage_path=storage_path,
+                        cover_url=cover_url,
+                        page_count=len(chapter.pages),
+                        page_extension=page_ext,
                         manga_title=manga.title,
                         chapter_title=chapter.title,
                         char_id=char_id,
@@ -545,12 +735,12 @@ def main() -> None:
     parser.add_argument(
         "--urls-only",
         action="store_true",
-        help="Enregistre uniquement les URLs des pages (JSON) sans télécharger les images",
+        help="Télécharge les pages et les envoie sur Supabase Storage, puis synchronise library.json",
     )
     parser.add_argument(
         "--pages-dir",
         default="../mon-app/data/pages",
-        help="Dossier de sortie des JSON d'URLs (défaut : ../mon-app/data/pages)",
+        help=argparse.SUPPRESS,
     )
     parser.add_argument(
         "--character",
