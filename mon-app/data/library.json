@@ -1,8 +1,8 @@
 {
   "lastScraped": {
     "publisherId": "dc",
-    "characterId": "batman",
-    "comicId": "dc-batman-chronicle1988-volume-1"
+    "characterId": "wonderwoman",
+    "comicId": "dc-wonderwoman-gregrucka-volume-1"
   },
   "publishers": [
     {
@@ -207,7 +207,7 @@
     {
       "id": "spiderman",
       "publisherId": "marvel",
-      "name": "Spiderman",
+      "name": "Spider-Man",
       "realName": "Peter Parker",
       "image": "https://i.pinimg.com/736x/fc/62/8e/fc628e3bf6b304f7fb822b0c99d7d1e6.jpg",
       "comics": [
@@ -253,6 +253,70 @@
           "description": "C’est la Saint-Valentin et Peter Parker a le vague à l’âme. Cela fait bien longtemps que Gwen Stacy est morte, et pourtant il ne parvient pas à l’oublier. Il se remémore leur histoire, ses affrontements en tant que Spider-Man avec Kraven le Chasseur et d’autres vilains, et la fin tragique de la douce Gwen.",
           "storagePath": "marvel/spiderman/blue/Volume 1",
           "pageCount": 154,
+          "pageExtension": "webp"
+        }
+      ]
+    },
+    {
+      "id": "wonderwoman",
+      "publisherId": "dc",
+      "name": "Wonder Woman",
+      "realName": "Diana Prince",
+      "image": "https://imgs.search.brave.com/0s6RZ8aorLi39_86gpHSmDON81IvpRBC9Q3bWd9FRfA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzhmL2Iw/L2QzLzhmYjBkMzQy/ZmZlN2FlY2VhYmUy/ZDJiNWE4NzYwNWJk/LmpwZw",
+      "comics": [
+        {
+          "id": "dc-wonderwoman-georgeperez-volume-1",
+          "title": "Wonder Woman : Dieux et Mortels – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/wonderwoman/georgeperez/Volume%201/0001.webp",
+          "year": 1987,
+          "order": 1,
+          "description": "Isolées depuis des millénaires sur l’île de Themyscira, les Amazones ont vécu recluses et ont développé une société pacifiste et progressiste à l’écart des tourments du monde des hommes. Mais lorsque le pilote Steve Trevor échoue sur cette île paradisiaque, la princesse Diana se charge de le ramener dans son pays : débute alors pour cette jeune Wonder Woman une quête identitaire qui va la mener face à Arès le dieu de la Guerre !",
+          "storagePath": "dc/wonderwoman/georgeperez/Volume 1",
+          "pageCount": 351,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-wonderwoman-georgeperez-volume-2",
+          "title": "Wonder Woman : Dieux et Mortels – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/wonderwoman/georgeperez/Volume%202/0001.webp",
+          "year": 1987,
+          "order": 2,
+          "description": "Isolées depuis des millénaires sur l’île de Themyscira, les Amazones ont vécu recluses et ont développé une société pacifiste et progressiste à l’écart des tourments du monde des hommes. Mais lorsque le pilote Steve Trevor échoue sur cette île paradisiaque, la princesse Diana se charge de le ramener dans son pays : débute alors pour cette jeune Wonder Woman une quête identitaire qui va la mener face à Arès le dieu de la Guerre !",
+          "storagePath": "dc/wonderwoman/georgeperez/Volume 2",
+          "pageCount": 323,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-wonderwoman-gregrucka-volume-1",
+          "title": "Greg Rucka Présente Wonder Woman – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/wonderwoman/gregrucka/Volume%201/0001.webp",
+          "year": 2003,
+          "order": 3,
+          "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
+          "storagePath": "dc/wonderwoman/gregrucka/Volume 1",
+          "pageCount": 275,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-wonderwoman-gregrucka-volume-2",
+          "title": "Greg Rucka Présente Wonder Woman – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/wonderwoman/gregrucka/Volume%202/0001.webp",
+          "year": 2004,
+          "order": 4,
+          "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
+          "storagePath": "dc/wonderwoman/gregrucka/Volume 2",
+          "pageCount": 284,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-wonderwoman-gregrucka-volume-3",
+          "title": "Greg Rucka Présente Wonder Woman – Volume 3",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/wonderwoman/gregrucka/Volume%203/0001.webp",
+          "year": 2005,
+          "order": 5,
+          "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
+          "storagePath": "dc/wonderwoman/gregrucka/Volume 3",
+          "pageCount": 329,
           "pageExtension": "webp"
         }
       ]
