@@ -1,8 +1,8 @@
 {
   "lastScraped": {
-    "publisherId": "marvel",
-    "characterId": "spiderman",
-    "comicId": "marvel-spiderman-integral3-spider-man-lintegrale-1966-volume-1"
+    "publisherId": "dc",
+    "characterId": "batman",
+    "comicId": "dc-batman-chronicle1988-volume-1"
   },
   "publishers": [
     {
@@ -157,6 +157,50 @@
           "storagePath": "dc/batman/amerevictoire/batman-amere-victoire-volume-1",
           "pageCount": 383,
           "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-batman-chronicle1987-volume-1",
+          "title": "Batman Chronicles : 1987 – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/chronicle1987/Volume%201/0001.webp",
+          "year": 1987,
+          "order": 4,
+          "description": "Après le départ de Dick Grayson, Batman se retrouve sans un Robin, jusqu’au jour où il croise la route de Jason Todd, un gamin des rues qui tente de lui voler les roues de sa Batmobile ! Après avoir défait une organisation criminelle, le Dynamique Duo est à nouveau réuni pour affronter les plus grandes menaces qui planent sur Gotham dont le Pingouin ou Gueule d’Argile.",
+          "storagePath": "dc/batman/chronicle1987/Volume 1",
+          "pageCount": 443,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-batman-chronicle1987-volume-2",
+          "title": "Batman Chronicles : 1987 – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/chronicle1987/Volume%202/0001.webp",
+          "year": 1987,
+          "order": 5,
+          "description": "Après le départ de Dick Grayson, Batman se retrouve sans un Robin, jusqu’au jour où il croise la route de Jason Todd, un gamin des rues qui tente de lui voler les roues de sa Batmobile ! Après avoir défait une organisation criminelle, le Dynamique Duo est à nouveau réuni pour affronter les plus grandes menaces qui planent sur Gotham dont le Pingouin ou Gueule d’Argile.",
+          "storagePath": "dc/batman/chronicle1987/Volume 2",
+          "pageCount": 355,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-batman-chronicle1988-volume-1",
+          "title": "Batman Chronicles : 1988 – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/chronicle1988/Volume%201/0001.webp",
+          "year": 1988,
+          "order": 6,
+          "description": "Pendant que Batman et Jason Todd, le nouveau Robin, prennent leurs marques en tant que nouvelle version du Dynamique Duo, leur chemin croise celui de Selina Kyle, qui continue, depuis quelques temps, d’apporter son aide au Protecteur de Gotham. Bien qu’elle préfèrerait apporter plus que son aide, elle voit Bruce décliner ses avances une nouvelle fois, et le Joker, toujours à l’affut d’un mauvais coup, y voit une occasion inespérée. Avec l’aide du Dr Moon, un savant tortionnaire, il décide de jouer sur le passé et les amnésies à répétition de la criminelle repentie pour la faire basculer à nouveau du mauvais côté…",
+          "storagePath": "dc/batman/chronicle1988/Volume 1",
+          "pageCount": 574,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "dc-batman-chronicle1988-volume-2",
+          "title": "Batman Chronicles : 1988 – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/chronicle1988/Volume%202/0001.webp",
+          "year": 1988,
+          "order": 7,
+          "description": "Pendant que Batman et Jason Todd, le nouveau Robin, prennent leurs marques en tant que nouvelle version du Dynamique Duo, leur chemin croise celui de Selina Kyle, qui continue, depuis quelques temps, d’apporter son aide au Protecteur de Gotham. Bien qu’elle préfèrerait apporter plus que son aide, elle voit Bruce décliner ses avances une nouvelle fois, et le Joker, toujours à l’affut d’un mauvais coup, y voit une occasion inespérée. Avec l’aide du Dr Moon, un savant tortionnaire, il décide de jouer sur le passé et les amnésies à répétition de la criminelle repentie pour la faire basculer à nouveau du mauvais côté…",
+          "storagePath": "dc/batman/chronicle1988/Volume 2",
+          "pageCount": 342,
+          "pageExtension": "webp"
         }
       ]
     },
