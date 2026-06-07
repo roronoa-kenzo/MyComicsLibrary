@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import { Geist } from "next/font/google";
 import { baseMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -14,7 +15,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="fr" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full bg-zinc-950">{children}</body>
+      <body className="min-h-full bg-zinc-950">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
