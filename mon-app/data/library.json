@@ -1,8 +1,8 @@
 {
   "lastScraped": {
     "publisherId": "dc",
-    "characterId": "wonderwoman",
-    "comicId": "dc-wonderwoman-gregrucka-volume-1"
+    "characterId": "greenlantern",
+    "comicId": "dc-greenlantern-greenarrow-volume-1"
   },
   "publishers": [
     {
@@ -28,6 +28,17 @@
       "realName": "Hal Jordan",
       "image": "https://i.pinimg.com/originals/91/04/92/910492d42415b1fa36180f1441dcac7f.jpg",
       "comics": [
+        {
+          "id": "dc-greenlantern-greenarrow-volume-1",
+          "title": "Green Lantern/Green Arrow",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/greenlantern/greenarrow/Volume%201/0001.webp",
+          "year": 1983,
+          "order": 0,
+          "description": "Tandis qu’Hal Jordan se charge de protéger l’univers à l’aide de son anneau de Green Lantern, sur Terre, Oliver Queen s’occupe des malfrats de Star City sous le masque de l’archer Green Arrow. Toutefois, les deux justiciers d’émeraude font parfois équipe ! Imaginées par Denis O’NEIL et illustrées par le tandem Neal ADAMS/Dan ADKINS, ces aventures qui bouleversèrent l’industrie du comics par leur approche réaliste des problématiques propres aux années 70 (crise, drogue, crime, écologie, etc.), signèrent une nouvelle étape dans l’évolution du médium.",
+          "storagePath": "dc/greenlantern/greenarrow/Volume 1",
+          "pageCount": 381,
+          "pageExtension": "webp"
+        },
         {
           "id": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
           "title": "Emerald Twilight – Volume 1",
