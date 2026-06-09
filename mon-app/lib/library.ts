@@ -159,11 +159,16 @@ export function getLastScraped(): {
   comic: Comic | undefined;
 } {
   const { publisherId, characterId, comicId } = library.lastScraped;
-  return {
-    publisher: getPublisher(publisherId),
-    character: getCharacter(publisherId, characterId),
-    comic: getComic(publisherId, characterId, comicId),
-  };
+  const publisher = getPublisher(publisherId);
+  const character = getCharacter(publisherId, characterId);
+  let comic = getComic(publisherId, characterId, comicId);
+
+  // Repli si le comicId du scraper ne correspond pas (ex. suffixe -volume-1)
+  if (!comic && character?.comics.length) {
+    comic = [...character.comics].sort((a, b) => b.order - a.order)[0];
+  }
+
+  return { publisher, character, comic };
 }
 
 function encodePath(storagePath: string): string {

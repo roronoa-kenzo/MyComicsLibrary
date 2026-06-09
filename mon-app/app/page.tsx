@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 export default function Home() {
   const { publisher, character, comic } = getLastScraped();
   const publishers = getAllPublishers();
+  const hasHero = !!(comic && character && publisher);
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -21,7 +22,7 @@ export default function Home() {
       <Navbar />
 
       {/* ── Hero : dernier comic scrappé ── */}
-      {comic && character && publisher && (
+      {hasHero && (
         <section className="relative min-h-screen flex items-center pt-20">
           {/* Background cover blurred */}
           <div
@@ -93,7 +94,7 @@ export default function Home() {
       )}
 
       {/* ── Guide de Lecture ── */}
-      <section className="py-24 px-6 bg-zinc-900/50">
+      <section className={`py-24 px-6 bg-zinc-900/50 ${!hasHero ? "pt-28" : ""}`}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl font-black text-white tracking-tight">
