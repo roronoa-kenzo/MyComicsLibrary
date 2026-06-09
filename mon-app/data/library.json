@@ -1,8 +1,8 @@
 {
   "lastScraped": {
     "publisherId": "dc",
-    "characterId": "greenlantern",
-    "comicId": "dc-greenlantern-greenarrow-volume-1"
+    "characterId": "batman",
+    "comicId": "dc-batman-lenigmederedhood-volume-1"
   },
   "publishers": [
     {
@@ -10,7 +10,79 @@
       "name": "DC Comics",
       "tagline": "L'univers des super-héros depuis 1934",
       "gradientFrom": "#0476D0",
-      "gradientTo": "#001850"
+      "gradientTo": "#001850",
+      "periods": [
+        {
+          "id": "precrisis",
+          "name": "Pre-Crisis",
+          "color": "#FACC15"
+        },
+        {
+          "id": "postcrisis",
+          "name": "Post-Crisis",
+          "color": "#EF4444"
+        },
+        {
+          "id": "postinfinitecrisis",
+          "name": "Post-Infinite Crisis",
+          "color": "#F97316"
+        },
+        {
+          "id": "new52",
+          "name": "New 52",
+          "color": "#3B82F6"
+        }
+      ],
+      "timeline": [
+        {
+          "comic": "dc-greenlantern-greenarrow-volume-1",
+          "period": "precrisis"
+        },
+        {
+          "comic": "dc-events-crisisoninfiniteearths-volume-1",
+          "period": "precrisis"
+        },
+        {
+          "comic": "dc-teams-justiceleague-justiceleagueinternational-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-batman-chronicle1988-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-superman-lamortdesuperman-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-teams-justiceleague-justiceleagueofamerica-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-teams-justiceleague-identitycrisis",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-greenlantern-geoffjohns-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-event-infinitecrisis-volume-1",
+          "period": "postcrisis"
+        },
+        {
+          "comic": "dc-batman-lenigmederedhood",
+          "period": "postinfinitecrisis"
+        },
+        {
+          "comic": "dc-greenlantern-geoffjohns-volume-2",
+          "period": "postinfinitecrisis"
+        }
+      ]
     },
     {
       "id": "marvel",
@@ -37,7 +109,8 @@
           "description": "Tandis qu’Hal Jordan se charge de protéger l’univers à l’aide de son anneau de Green Lantern, sur Terre, Oliver Queen s’occupe des malfrats de Star City sous le masque de l’archer Green Arrow. Toutefois, les deux justiciers d’émeraude font parfois équipe ! Imaginées par Denis O’NEIL et illustrées par le tandem Neal ADAMS/Dan ADKINS, ces aventures qui bouleversèrent l’industrie du comics par leur approche réaliste des problématiques propres aux années 70 (crise, drogue, crime, écologie, etc.), signèrent une nouvelle étape dans l’évolution du médium.",
           "storagePath": "dc/greenlantern/greenarrow/Volume 1",
           "pageCount": 381,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "precrisis"
         },
         {
           "id": "dc-greenlantern-green-lantern-emerald-twilight-volume-1",
@@ -48,7 +121,8 @@
           "description": "Dans ce run légendaire, Hal Jordan — le Green Lantern le plus puissant de la Terre — est anéanti par la destruction de Coast City par Mongul et le Cyborg-Superman. Submergé par le deuil et la folie, il entame un voyage brutal à travers l'espace pour s'emparer de tous les anneaux de pouvoir des Green Lanterns sur son passage. Un tournant majeur et déchirant de l'univers DC.",
           "storagePath": "dc/greenlantern/green-lantern-emerald-twilight-volume-1",
           "pageCount": 254,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-1",
@@ -59,7 +133,8 @@
           "description": "Hal Jordan revient d'entre les morts et reprend son anneau de pouvoir. Ce premier volume du run définitif de Geoff Johns pose les bases d'une nouvelle ère pour le Green Lantern Corps, avec le retour de Sinestro comme grand antagoniste et les prémices de la guerre des couleurs qui s'annonce.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 1",
           "pageCount": 476,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-2",
@@ -70,7 +145,8 @@
           "description": "Hal Jordan affronte d'anciens Green Lanterns corrompus qui cherchent à se venger du Corps. Pendant ce temps, les Gardiens dissimulent de sombres secrets sur l'origine du Corps et la nature du Parallax. Un arc haletant qui révèle les failles profondes au sein de l'institution.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 2",
           "pageCount": 466,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postinfinitecrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-3",
@@ -81,7 +157,8 @@
           "description": "Hal Jordan est pourchassé par le gouvernement américain alors que des accusations passées refont surface. Parallèlement, Sinestro forge ses propres anneaux jaunes alimentés par la peur, réunissant une armée pour défier le Corps Vert dans ce qui sera le prélude de la Sinestro Corps War.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 3",
           "pageCount": 426,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postinfinitecrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-4",
@@ -92,7 +169,8 @@
           "description": "La guerre du Corps Sinestro éclate dans toute son ampleur. Sinestro et ses légions de la peur envahissent la Terre et l'espace connu. Le Green Lantern Corps doit briser ses propres lois pour survivre dans l'un des événements les plus épiques de l'histoire DC.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 4",
           "pageCount": 517,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postinfinitecrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-5",
@@ -103,7 +181,8 @@
           "description": "L'origine secrète de Hal Jordan est enfin révélée, de son enfance traumatisante à son premier contact avec un anneau de pouvoir. Puis le spectre de la Blackest Night se précise avec l'émergence des Lanternes Rouges et d'Agent Orange, annonçant une guerre cosmique entre toutes les émotions de l'univers.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 5",
           "pageCount": 470,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postinfinitecrisis"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-6",
@@ -114,7 +193,8 @@
           "description": "La Blackest Night commence. Les morts se relèvent à travers l'univers, portant des anneaux noirs alimentés par le vide émotionnel. Hal Jordan doit unir toutes les factions de lanternes — vertes, rouges, bleues, violettes, oranges et jaunes — pour combattre Nekron, le seigneur des morts.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 6",
           "pageCount": 320,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "new52"
         },
         {
           "id": "dc-greenlantern-geoffjohns-volume-7",
@@ -125,7 +205,8 @@
           "description": "L'ère Geoff Johns se conclut avec la Guerre des Green Lanterns. Les Gardiens de l'Univers, corrompus par leurs propres peurs, déclenchent un conflit qui oppose les membres du Corps entre eux. Un final dévastateur qui referme dix ans de récits et prépare le terrain pour une nouvelle génération.",
           "storagePath": "dc/greenlantern/geoffjohns/Volume 7",
           "pageCount": 308,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "new52"
         }
       ]
     },
@@ -145,7 +226,8 @@
           "description": "Cette histoire est un retour au fonds du personnage de Batman, avec un Batman qui est encore jeune et qui doit apprendre à devenir le héros que le monde attend de lui.",
           "storagePath": "dc/batman/anneeun/batman-annee-un-volume-1",
           "pageCount": 195,
-          "pageExtension": "jpg"
+          "pageExtension": "jpg",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-unlonghalloween-batman-un-long-halloween-volume-1",
@@ -156,7 +238,8 @@
           "description": "Quelques mois après sa première victoire contre l’empire du crime qui phagocyte. La cité de Gotham, le vigilant Batman enquête sur une série de meurtres perpétrés uniquement lors des fêtes. Travaillant en parallèle avec le jeune procureur Harvey Dent et le Lieutenant James Gordons, le Chevalier Noir engage une course contre ce calendrier morbide qui égrène chaque mois une victime supplémentaire. Une quête dont la conclusion pourrait bien sonner la chute du plus grand espoir de Gotham, et la naissance de l’un de ses pires monstres de foire…",
           "storagePath": "dc/batman/unlonghalloween/batman-un-long-halloween-volume-1",
           "pageCount": 367,
-          "pageExtension": "jpg"
+          "pageExtension": "jpg",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-amerevictoire-batman-amere-victoire-volume-1",
@@ -167,7 +250,8 @@
           "description": "Un an après « l’affaire Holiday », Gotham City est toujours le théâtre de règlements de comptes entre les familles mafieuses et les « patients » de l’asile d’Arkham. Si Alberto Falcone était considéré jusqu’alors comme le véritable tueur Holiday, une nouvelle vague de meurtres jette le trouble sur son arrestation. Pour restaurer l’ordre à Gotham, Batman aura besoin de toute l’aide possible, voire de prendre sous son aile un nouveau partenaire, Robin !",
           "storagePath": "dc/batman/amerevictoire/batman-amere-victoire-volume-1",
           "pageCount": 383,
-          "pageExtension": "jpg"
+          "pageExtension": "jpg",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-chronicle1987-volume-1",
@@ -178,7 +262,8 @@
           "description": "Après le départ de Dick Grayson, Batman se retrouve sans un Robin, jusqu’au jour où il croise la route de Jason Todd, un gamin des rues qui tente de lui voler les roues de sa Batmobile ! Après avoir défait une organisation criminelle, le Dynamique Duo est à nouveau réuni pour affronter les plus grandes menaces qui planent sur Gotham dont le Pingouin ou Gueule d’Argile.",
           "storagePath": "dc/batman/chronicle1987/Volume 1",
           "pageCount": 443,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-chronicle1987-volume-2",
@@ -189,7 +274,8 @@
           "description": "Après le départ de Dick Grayson, Batman se retrouve sans un Robin, jusqu’au jour où il croise la route de Jason Todd, un gamin des rues qui tente de lui voler les roues de sa Batmobile ! Après avoir défait une organisation criminelle, le Dynamique Duo est à nouveau réuni pour affronter les plus grandes menaces qui planent sur Gotham dont le Pingouin ou Gueule d’Argile.",
           "storagePath": "dc/batman/chronicle1987/Volume 2",
           "pageCount": 355,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-chronicle1988-volume-1",
@@ -200,7 +286,8 @@
           "description": "Pendant que Batman et Jason Todd, le nouveau Robin, prennent leurs marques en tant que nouvelle version du Dynamique Duo, leur chemin croise celui de Selina Kyle, qui continue, depuis quelques temps, d’apporter son aide au Protecteur de Gotham. Bien qu’elle préfèrerait apporter plus que son aide, elle voit Bruce décliner ses avances une nouvelle fois, et le Joker, toujours à l’affut d’un mauvais coup, y voit une occasion inespérée. Avec l’aide du Dr Moon, un savant tortionnaire, il décide de jouer sur le passé et les amnésies à répétition de la criminelle repentie pour la faire basculer à nouveau du mauvais côté…",
           "storagePath": "dc/batman/chronicle1988/Volume 1",
           "pageCount": 574,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-batman-chronicle1988-volume-2",
@@ -211,7 +298,19 @@
           "description": "Pendant que Batman et Jason Todd, le nouveau Robin, prennent leurs marques en tant que nouvelle version du Dynamique Duo, leur chemin croise celui de Selina Kyle, qui continue, depuis quelques temps, d’apporter son aide au Protecteur de Gotham. Bien qu’elle préfèrerait apporter plus que son aide, elle voit Bruce décliner ses avances une nouvelle fois, et le Joker, toujours à l’affut d’un mauvais coup, y voit une occasion inespérée. Avec l’aide du Dr Moon, un savant tortionnaire, il décide de jouer sur le passé et les amnésies à répétition de la criminelle repentie pour la faire basculer à nouveau du mauvais côté…",
           "storagePath": "dc/batman/chronicle1988/Volume 2",
           "pageCount": 342,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
+        },
+        {
+          "id": "dc-batman-lenigmederedhood",
+          "title": "Batman : L’Énigme de Red Hood",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/batman/lenigmederedhood/Volume%201/0001.jpg",
+          "year": 2005,
+          "order": 10,
+          "description": "Des années plus tôt, Batman subit sa plus terrible défaite lorsque le Joker tua le second Robin, Jason Todd, à coups de barre à mine. Le Chevalier Noir a néanmoins réussi à poursuivre sa mission, épaulé par son précédent acolyte, Dick Grayson. Mais ce souvenir douloureux est ravivé lorsqu’un nouveau justicier, aux moyens expéditifs, débarque à Gotham. Instaurant l’effroi dans les rangs de la pègre, il utilise de plus l’ancien alias du Joker : Red Hood.",
+          "storagePath": "dc/batman/lenigmederedhood/Volume 1",
+          "pageCount": 504,
+          "pageExtension": "jpg"
         }
       ]
     },
@@ -284,7 +383,8 @@
           "description": "Isolées depuis des millénaires sur l’île de Themyscira, les Amazones ont vécu recluses et ont développé une société pacifiste et progressiste à l’écart des tourments du monde des hommes. Mais lorsque le pilote Steve Trevor échoue sur cette île paradisiaque, la princesse Diana se charge de le ramener dans son pays : débute alors pour cette jeune Wonder Woman une quête identitaire qui va la mener face à Arès le dieu de la Guerre !",
           "storagePath": "dc/wonderwoman/georgeperez/Volume 1",
           "pageCount": 351,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-wonderwoman-georgeperez-volume-2",
@@ -295,7 +395,8 @@
           "description": "Isolées depuis des millénaires sur l’île de Themyscira, les Amazones ont vécu recluses et ont développé une société pacifiste et progressiste à l’écart des tourments du monde des hommes. Mais lorsque le pilote Steve Trevor échoue sur cette île paradisiaque, la princesse Diana se charge de le ramener dans son pays : débute alors pour cette jeune Wonder Woman une quête identitaire qui va la mener face à Arès le dieu de la Guerre !",
           "storagePath": "dc/wonderwoman/georgeperez/Volume 2",
           "pageCount": 323,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-wonderwoman-gregrucka-volume-1",
@@ -306,7 +407,8 @@
           "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
           "storagePath": "dc/wonderwoman/gregrucka/Volume 1",
           "pageCount": 275,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-wonderwoman-gregrucka-volume-2",
@@ -317,7 +419,8 @@
           "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
           "storagePath": "dc/wonderwoman/gregrucka/Volume 2",
           "pageCount": 284,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
         },
         {
           "id": "dc-wonderwoman-gregrucka-volume-3",
@@ -328,7 +431,183 @@
           "description": "L’ambassade de Themyscira est également l’adresse où réside la plus célèbre héroïne de la Ligue de Justice, Wonder Woman. Mais lorsqu’une jeune fille traquée demande asile et protection de cette dernière, la princesse amazone se retrouve confrontée à son plus dangereux allié, Batman, le Chevalier Noir.",
           "storagePath": "dc/wonderwoman/gregrucka/Volume 3",
           "pageCount": 329,
-          "pageExtension": "webp"
+          "pageExtension": "webp",
+          "period": "postcrisis"
+        }
+      ]
+    },
+    {
+      "id": "crisisoninfiniteearths",
+      "publisherId": "dc",
+      "name": "Crisis on Infinite Earths",
+      "realName": "Crossover",
+      "image": "https://wallpapercave.com/wp/wp3859464.jpg",
+      "isEvent": true,
+      "comics": [
+        {
+          "id": "dc-events-crisisoninfiniteearths-volume-1",
+          "title": "Crisis on Infinite Earths",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/events/crisisoninfiniteearths/Volume%201/0001.jpg",
+          "year": 1985,
+          "order": 0,
+          "description": "L’Anti-Monitor mène ses troupes de soldats d’ombre de dimensions en dimensions afin de détruire les Univers parallèles et de s’alimenter de ses énergies perdues. Son double positif, le Monitor réunit une assemblée de héros de différentes Terres afin de stopper son avancée, mais même les plus puissants des surhommes ne peuvent rien face à la vague d’antimatière qui fond sur eux. Des mondes vont vivre… des mondes vont mourir… et l’Univers DC ne sera plus jamais le même !",
+          "storagePath": "dc/events/crisisoninfiniteearths/Volume 1",
+          "pageCount": 512,
+          "pageExtension": "jpg",
+          "period": "precrisis"
+        }
+      ]
+    },
+    {
+      "id": "justiceleague",
+      "publisherId": "dc",
+      "name": "Justice League",
+      "image": "https://i.redd.it/wgqxbly48lr41.jpg",
+      "isTeam": true,
+      "comics": [
+        {
+          "id": "dc-teams-justiceleague-justiceleagueinternational-volume-1",
+          "title": "Justice League International – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/teams/justiceleague/justiceleagueinternational/Volume%201/0001.jpg",
+          "year": 1987,
+          "order": 1,
+          "description": "Après avoir subi la Crise des Terres infinies et l’invasion de Darkseid, c’est un nouveau jour qui se lève pour les super-héros, et une nouvelle Ligue de Justice qui se forme, à dimension mondiale. Mais celle-ci, financée par le mystérieux magnat Maxwell Lord, est autant menacée par des dissensions internes que par les nombreux adversaires qu’elle rencontre.",
+          "storagePath": "dc/teams/justiceleague/justiceleagueinternational/Volume 1",
+          "pageCount": 393,
+          "pageExtension": "jpg",
+          "period": "postcrisis"
+        },
+        {
+          "id": "dc-teams-justiceleague-justiceleagueinternational-volume-2",
+          "title": "Justice League International – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/teams/justiceleague/justiceleagueinternational/Volume%202/0001.jpg",
+          "year": 1987,
+          "order": 2,
+          "description": "Après avoir subi la Crise des Terres infinies et l’invasion de Darkseid, c’est un nouveau jour qui se lève pour les super-héros, et une nouvelle Ligue de Justice qui se forme, à dimension mondiale. Mais celle-ci, financée par le mystérieux magnat Maxwell Lord, est autant menacée par des dissensions internes que par les nombreux adversaires qu’elle rencontre.",
+          "storagePath": "dc/teams/justiceleague/justiceleagueinternational/Volume 2",
+          "pageCount": 455,
+          "pageExtension": "jpg",
+          "period": "postcrisis"
+        },
+        {
+          "id": "dc-teams-justiceleague-justiceleagueofamerica-volume-1",
+          "title": "Justice League of America – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/teams/justiceleague/justiceleagueofamerica/Volume%201/0001.jpg",
+          "year": 1997,
+          "order": 3,
+          "description": "Superman, Batman, Wonder Woman, Aquaman, Green Lantern, Flash, le Limier Martien… Ce sont les plus grands super-héros de la Terre, ceux vers qui le monde entier se tourne lorsque les menaces extraterrestres ou surnaturelles menacent son existence. Ensemble, ils forment la Ligue de Justice, et leur première mission les oppose à une équipe concurrente, désireuse de résoudre tous les maux de l’humanité : de la famine à la maladie… mais à quel prix ?",
+          "storagePath": "dc/teams/justiceleague/justiceleagueofamerica/Volume 1",
+          "pageCount": 338,
+          "pageExtension": "jpg",
+          "period": "postcrisis"
+        },
+        {
+          "id": "dc-teams-justiceleague-identitycrisis",
+          "title": "Justice League – Crise d’identité",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/teams/justiceleague/identitycrisis/justice-league-crise-didentite-volume-1/0001.webp",
+          "year": 2004,
+          "order": 9,
+          "description": "Sue Dibny la femme d’Extensiman, l’un des membres de la Ligue de Justice, a été assassinée. Le meurtrier a pu déjouer les systèmes de sécurité installés par les plus grands héros de la Terre. L’enquête menée par les justiciers va mettre à jour un complot au sein même de la Ligue et un terrible secret concernant leur traitement des super-vilains !",
+          "storagePath": "dc/teams/justiceleague/identitycrisis/justice-league-crise-didentite-volume-1",
+          "pageCount": 326,
+          "pageExtension": "webp",
+          "period": "postcrisis"
+        }
+      ]
+    },
+    {
+      "id": "superman",
+      "publisherId": "dc",
+      "name": "Superman",
+      "realName": "Clark Kent",
+      "image": "https://imgs.search.brave.com/4wMdzzrzJBeqaGVib2UE_CvJhAO78BPnxuzY6m8dC-c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/Z2l2ZS1tZS15b3Vy/LWJlc3QtbW9zdC1i/ZWF1dGlmdWwtc3Vw/ZXJtYW4td2FsbHBh/cGVycy12MC13N2tm/b2p4d3NoN2UxLmpw/ZWc_d2lkdGg9NzM2/JmZvcm1hdD1wanBn/JmF1dG89d2VicCZz/PWFiYjA5NGFiNzE0/ZjI5MGI3Y2EzNGEz/MmNjMjk2MjZiZjEx/ZTk3ZjM",
+      "comics": [
+        {
+          "id": "dc-superman-lamortdesuperman-volume-1",
+          "title": "La mort de Superman – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/superman/lamortdesuperman/Volume%201/0001.jpg",
+          "year": 1992,
+          "order": 1,
+          "description": "Doomsday, une créature maléfique dévaste les États-Unis de long en large. Même la Ligue de Justice succombe face à une telle sauvagerie. Seul Superman reste debout face au monstre. Debout… pour son dernier combat.",
+          "storagePath": "dc/superman/lamortdesuperman/Volume 1",
+          "pageCount": 490,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-superman-lamortdesuperman-volume-2",
+          "title": "La mort de Superman – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/superman/lamortdesuperman/Volume%202/0001.jpg",
+          "year": 1992,
+          "order": 2,
+          "description": "Doomsday, une créature maléfique dévaste les États-Unis de long en large. Même la Ligue de Justice succombe face à une telle sauvagerie. Seul Superman reste debout face au monstre. Debout… pour son dernier combat.",
+          "storagePath": "dc/superman/lamortdesuperman/Volume 2",
+          "pageCount": 537,
+          "pageExtension": "jpg"
+        }
+      ]
+    },
+    {
+      "id": "infinitecrisis",
+      "publisherId": "dc",
+      "name": "Infinite Crisis",
+      "realName": "Event",
+      "image": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%201/0001.jpg",
+      "isEvent": true,
+      "comics": [
+        {
+          "id": "dc-event-infinitecrisis-volume-1",
+          "title": "Infinite Crisis – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%201/0001.jpg",
+          "year": 2005,
+          "order": 1,
+          "description": "Ce tome pose les bases de la crise. On découvre un monde DC déjà instable : surveillance extrême, paranoïa envers les héros, et montée en puissance de programmes secrets comme OMAC. On suit surtout les conséquences de Identity Crisis et la mise en place des tensions qui vont exploser.",
+          "storagePath": "dc/event/infinitecrisis/Volume 1",
+          "pageCount": 307,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-event-infinitecrisis-volume-2",
+          "title": "Infinite Crisis – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%202/0001.jpg",
+          "year": 2005,
+          "order": 2,
+          "description": "Ici, on entre dans les histoires parallèles qui construisent la crise : la guerre entre Rann et Thanagar, les conflits entre super-vilains, et les premières grandes alliances du côté obscur. C’est un tome plus éclaté mais essentiel pour comprendre que tout le monde se prépare à quelque chose de massif.",
+          "storagePath": "dc/event/infinitecrisis/Volume 2",
+          "pageCount": 335,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-event-infinitecrisis-volume-3",
+          "title": "Infinite Crisis – Volume 3",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%203/0001.jpg",
+          "year": 2005,
+          "order": 3,
+          "description": "Le côté mystique prend le dessus. Les forces magiques de l’univers DC réagissent à la crise imminente. On voit la magie se dérégler et des personnages comme la Spectre ou l’Enchanteresse jouer un rôle clé. C’est un tome important pour comprendre que la crise touche tous les niveaux de l’univers DC.",
+          "storagePath": "dc/event/infinitecrisis/Volume 3",
+          "pageCount": 322,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-event-infinitecrisis-volume-4",
+          "title": "Infinite Crisis – Volume 4",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%204/0001.jpg",
+          "year": 2005,
+          "order": 4,
+          "description": "On entre dans le cœur de la crise. Les anciens “survivants” du multivers commencent à agir dans l’ombre. Les héros comprennent qu’une menace plus grande qu’eux est en train de manipuler la réalité. Le ton devient beaucoup plus grave et centré sur les conséquences globales.",
+          "storagePath": "dc/event/infinitecrisis/Volume 4",
+          "pageCount": 305,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "dc-event-infinitecrisis-volume-5",
+          "title": "Infinite Crisis – Volume 5",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/dc/event/infinitecrisis/Volume%205/0001.jpg",
+          "year": 2006,
+          "order": 5,
+          "description": "Le climax. Tous les fils narratifs se rejoignent : révélations sur les univers parallèles, affrontements entre héros, et retour de figures majeures liées à l’ancien multivers. C’est la guerre totale DC, avec des conséquences directes sur la continuité (fin du multivers classique et passage vers une nouvelle ère).",
+          "storagePath": "dc/event/infinitecrisis/Volume 5",
+          "pageCount": 290,
+          "pageExtension": "jpg"
         }
       ]
     }

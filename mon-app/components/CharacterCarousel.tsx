@@ -8,6 +8,19 @@ interface Props {
   characters: Character[];
   publisherId: string;
   accentColor: string;
+  emptyMessage?: string;
+}
+
+function Chevron({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="currentColor" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
 }
 
 function CharacterCircle({
@@ -52,52 +65,58 @@ function CharacterCircle({
   );
 }
 
+const arrowBase =
+  "absolute top-[3.5rem] z-10 flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-zinc-900/70 text-zinc-300 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 ease-out hover:border-white/25 hover:bg-zinc-800 hover:text-white hover:scale-105 opacity-70 group-hover:opacity-90 hover:opacity-100";
+
 export default function CharacterCarousel({
   characters,
   publisherId,
   accentColor,
+  emptyMessage = "Aucun personnage défini pour cet éditeur.",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: "left" | "right") => {
-    if (ref.current) {
-      ref.current.scrollBy({ left: dir === "left" ? -320 : 320, behavior: "smooth" });
-    }
+    ref.current?.scrollBy({
+      left: dir === "left" ? -320 : 320,
+      behavior: "smooth",
+    });
   };
 
   if (characters.length === 0) {
     return (
-      <p className="text-zinc-500 text-center py-12">
-        Aucun personnage défini pour cet éditeur.
-      </p>
+      <p className="text-zinc-500 text-center py-12">{emptyMessage}</p>
     );
   }
 
+  const showArrows = characters.length > 3;
+
   return (
-    <div className="relative">
-      {characters.length > 3 && (
+    <div className="group relative">
+      {showArrows && (
         <>
           <button
+            type="button"
             onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center shadow-xl transition-colors"
+            className={`${arrowBase} left-1`}
             aria-label="Défiler à gauche"
           >
-            ‹
+            <Chevron className="h-[18px] w-[18px]" />
           </button>
           <button
+            type="button"
             onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-zinc-800 hover:bg-zinc-700 text-white flex items-center justify-center shadow-xl transition-colors"
+            className={`${arrowBase} right-1`}
             aria-label="Défiler à droite"
           >
-            ›
+            <Chevron className="h-[18px] w-[18px] rotate-180" />
           </button>
         </>
       )}
 
       <div
         ref={ref}
-        className="flex gap-10 overflow-x-auto scroll-smooth pb-6 px-2"
-        style={{ scrollbarWidth: "none" }}
+        className="flex gap-10 overflow-x-auto scroll-smooth pb-6 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {characters.map((character) => (
           <CharacterCircle

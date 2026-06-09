@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import { getCharacter, getPublisher } from "@/lib/library";
+import PeriodBadge from "@/components/PeriodBadge";
+import { getCharacter, getComicPeriod, getPublisher } from "@/lib/library";
 
 type Params = Promise<{ publisher: string; character: string }>;
 
@@ -44,7 +45,7 @@ export default async function CharacterPage({ params }: { params: Params }) {
       <Navbar />
 
       {/* Character header */}
-      <section className="relative pt-20 pb-12 overflow-hidden">
+      <section className="relative pt-20 pb-8 overflow-hidden">
         <div
           className="absolute inset-0 opacity-15"
           style={{
@@ -95,7 +96,7 @@ export default async function CharacterPage({ params }: { params: Params }) {
       </section>
 
       {/* Comics list */}
-      <section className="py-12 px-6">
+      <section className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-lg font-bold text-white mb-8">
             {sortedComics.length} comic{sortedComics.length > 1 ? "s" : ""} disponible
@@ -103,7 +104,9 @@ export default async function CharacterPage({ params }: { params: Params }) {
           </h2>
 
           <div className="flex flex-col gap-6">
-            {sortedComics.map((comic) => (
+            {sortedComics.map((comic) => {
+              const period = getComicPeriod(publisherId, comic);
+              return (
               <div
                 key={comic.id}
                 className="group flex flex-col sm:flex-row gap-6 bg-zinc-900 rounded-2xl p-5 border border-white/5 hover:border-white/10 transition-all duration-200 hover:bg-zinc-900/80"
@@ -125,12 +128,17 @@ export default async function CharacterPage({ params }: { params: Params }) {
                 {/* Info */}
                 <div className="flex flex-col justify-between gap-4 flex-1">
                   <div>
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      {period && <PeriodBadge period={period} />}
                       <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">
                         Vol. {comic.order}
                       </span>
-                      <span className="text-zinc-700">·</span>
-                      <span className="text-zinc-500 text-xs">{comic.year}</span>
+                      {comic.year > 0 && (
+                        <>
+                          <span className="text-zinc-700">·</span>
+                          <span className="text-zinc-500 text-xs">{comic.year}</span>
+                        </>
+                      )}
                     </div>
                     <h3 className="text-white font-bold text-xl leading-tight mb-3">
                       {comic.title}
@@ -154,7 +162,8 @@ export default async function CharacterPage({ params }: { params: Params }) {
                   </div>
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>

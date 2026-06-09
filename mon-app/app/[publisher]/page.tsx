@@ -3,7 +3,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CharacterCarousel from "@/components/CharacterCarousel";
-import { getPublisher, getPublisherCharacters } from "@/lib/library";
+import EventCards from "@/components/EventCards";
+import Timeline from "@/components/Timeline";
+import {
+  getPublisher,
+  getPublisherCharacters,
+  getPublisherEvents,
+  getPublisherTeams,
+  getPublisherTimeline,
+} from "@/lib/library";
 
 type Params = Promise<{ publisher: string }>;
 
@@ -36,6 +44,9 @@ export default async function PublisherPage({ params }: { params: Params }) {
   if (!publisher) notFound();
 
   const characters = getPublisherCharacters(publisherId);
+  const teams = getPublisherTeams(publisherId);
+  const events = getPublisherEvents(publisherId);
+  const timeline = getPublisherTimeline(publisherId);
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -43,7 +54,7 @@ export default async function PublisherPage({ params }: { params: Params }) {
 
       {/* Publisher header */}
       <section
-        className="relative pt-20 pb-16 flex items-end overflow-hidden"
+        className="relative pt-20 pb-10 flex items-end overflow-hidden"
         style={{
           background: `linear-gradient(160deg, ${publisher.gradientFrom}33, ${publisher.gradientTo} 70%, #09090b)`,
           minHeight: "320px",
@@ -79,10 +90,10 @@ export default async function PublisherPage({ params }: { params: Params }) {
       </section>
 
       {/* Characters carousel */}
-      <section className="py-16 px-6">
+      <section className="py-10 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-xl font-bold text-white mb-2">Personnages</h2>
-          <p className="text-zinc-500 text-sm mb-10">
+          <p className="text-zinc-500 text-sm mb-6">
             {characters.length} personnage{characters.length > 1 ? "s" : ""} disponible
             {characters.length > 1 ? "s" : ""}
           </p>
@@ -94,6 +105,54 @@ export default async function PublisherPage({ params }: { params: Params }) {
           />
         </div>
       </section>
+
+      {teams.length > 0 && (
+        <section className="py-10 px-6 border-t border-white/5">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-xl font-bold text-white mb-2">Équipes</h2>
+            <p className="text-zinc-500 text-sm mb-6">
+              {teams.length} équipe{teams.length > 1 ? "s" : ""} disponible
+              {teams.length > 1 ? "s" : ""}
+            </p>
+
+            <CharacterCarousel
+              characters={teams}
+              publisherId={publisherId}
+              accentColor={publisher.gradientFrom}
+              emptyMessage="Aucune équipe définie pour cet éditeur."
+            />
+          </div>
+        </section>
+      )}
+
+      {timeline.length > 0 && (
+        <section className="py-10 px-6 border-t border-white/5">
+          <div className="max-w-7xl mx-auto mb-6">
+            <h2 className="text-xl font-bold text-white mb-2">Chronologie</h2>
+            <p className="text-zinc-500 text-sm">
+              L&apos;ordre de lecture des comics {publisher.name}.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <Timeline items={timeline} publisherId={publisherId} />
+          </div>
+        </section>
+      )}
+
+      {events.length > 0 && (
+        <section className="py-10 px-6 border-t border-white/5">
+          <div className="max-w-7xl mx-auto text-left">
+            <h2 className="text-xl font-bold text-white mb-2">Events</h2>
+            <p className="text-zinc-500 text-sm mb-6">
+              {events.length} crossover{events.length > 1 ? "s" : ""} disponible
+              {events.length > 1 ? "s" : ""}
+            </p>
+
+            <EventCards events={events} publisherId={publisherId} />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

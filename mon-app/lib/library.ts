@@ -12,6 +12,8 @@ export interface Comic {
   storagePath: string;
   pageCount: number;
   pageExtension: string;
+  // ID de période éditoriale (precrisis, postcrisis, new52…) défini sur l'éditeur.
+  period?: string;
 }
 
 export interface Character {
@@ -21,6 +23,17 @@ export interface Character {
   realName: string;
   image: string;
   comics: Comic[];
+  // Crossover/event (ex. Crisis on Infinite Earths) : pas un personnage,
+  // masqué du carrousel mais toujours lisible et utilisable dans la frise.
+  isEvent?: boolean;
+  // Équipe (ex. Justice League) : carrousel Équipes, même pages/comics.
+  isTeam?: boolean;
+}
+
+export interface Period {
+  id: string;
+  name: string;
+  color: string;
 }
 
 export interface Publisher {
@@ -29,6 +42,18 @@ export interface Publisher {
   tagline: string;
   gradientFrom: string;
   gradientTo: string;
+  // Périodes éditoriales (Pre-Crisis, Post-Crisis, New 52…) avec leur couleur.
+  periods?: Period[];
+  // Frise chronologique : comics ordonnés, chacun rattaché à une période.
+  timeline?: { comic: string; period?: string }[];
+}
+
+export interface TimelineItem {
+  comic: Comic;
+  characterId: string;
+  characterName: string;
+  period?: Period;
+  isEvent?: boolean;
 }
 
 interface LastScraped {
@@ -54,7 +79,21 @@ export function getPublisher(id: string): Publisher | undefined {
 }
 
 export function getPublisherCharacters(publisherId: string): Character[] {
-  return library.characters.filter((c) => c.publisherId === publisherId);
+  return library.characters.filter(
+    (c) => c.publisherId === publisherId && !c.isEvent && !c.isTeam
+  );
+}
+
+export function getPublisherTeams(publisherId: string): Character[] {
+  return library.characters.filter(
+    (c) => c.publisherId === publisherId && c.isTeam
+  );
+}
+
+export function getPublisherEvents(publisherId: string): Character[] {
+  return library.characters.filter(
+    (c) => c.publisherId === publisherId && c.isEvent
+  );
 }
 
 export function getCharacter(
@@ -74,6 +113,44 @@ export function getComic(
   return getCharacter(publisherId, characterId)?.comics.find(
     (c) => c.id === comicId
   );
+}
+
+export function getComicPeriod(
+  publisherId: string,
+  comic: Comic,
+  fallbackPeriodId?: string
+): Period | undefined {
+  const periodId = comic.period ?? fallbackPeriodId;
+  if (!periodId) return undefined;
+  return getPublisher(publisherId)?.periods?.find((p) => p.id === periodId);
+}
+
+export function getPublisherTimeline(publisherId: string): TimelineItem[] {
+  const publisher = getPublisher(publisherId);
+  if (!publisher?.timeline?.length) return [];
+
+  const characters = library.characters.filter(
+    (c) => c.publisherId === publisherId
+  );
+  const periods = publisher.periods ?? [];
+
+  return publisher.timeline.flatMap((entry) => {
+    for (const character of characters) {
+      const comic = character.comics.find((c) => c.id === entry.comic);
+      if (comic) {
+        return [
+          {
+            comic,
+            characterId: character.id,
+            characterName: character.name,
+            period: getComicPeriod(publisherId, comic, entry.period),
+            isEvent: character.isEvent,
+          },
+        ];
+      }
+    }
+    return [];
+  });
 }
 
 export function getLastScraped(): {

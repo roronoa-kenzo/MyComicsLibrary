@@ -515,6 +515,16 @@ async def upload_chapter_to_supabase(
     return supa.public_url(f"{storage_prefix}/{chapter.pages[0].filename}")
 
 
+def _char_id_from_path(char_path: str) -> str:
+    """Extrait l'ID personnage/équipe/event depuis le chemin Supabase."""
+    parts = char_path.split("/")
+    if len(parts) >= 3 and parts[1] in ("teams", "events"):
+        return parts[2]
+    if len(parts) > 1:
+        return parts[1]
+    return parts[0] if parts else ""
+
+
 def _sync_library(
     storage_path: str,
     cover_url: str,
@@ -525,8 +535,11 @@ def _sync_library(
     char_id: str,
     publisher_id: str,
     library_path: Path,
+    *,
+    is_team: bool = False,
+    is_event: bool = False,
 ) -> None:
-    """Crée ou met à jour le personnage et le comic dans library.json."""
+    """Crée ou met à jour le personnage/équipe/event et le comic dans library.json."""
     if library_path.exists():
         data = json.loads(library_path.read_text(encoding="utf-8"))
     else:
@@ -550,7 +563,18 @@ def _sync_library(
             "comics": [],
         }
         data["characters"].append(char_entry)
-        print(f"  ✓ Nouveau personnage : {char_id}  (pense à renseigner name/realName)")
+        if is_team:
+            label = "équipe"
+        elif is_event:
+            label = "event"
+        else:
+            label = "personnage"
+        print(f"  ✓ Nouvelle {label} : {char_id}  (pense à renseigner name/realName)")
+
+    if is_team:
+        char_entry["isTeam"] = True
+    if is_event:
+        char_entry["isEvent"] = True
 
     # ── Comic ────────────────────────────────────────────────────────────────
     comic_id = re.sub(r"[/ ]+", "-", storage_path).lower().strip("-")
@@ -603,6 +627,8 @@ async def run(
     pages_dir: Path | None = None,
     char_path: str = "",
     publisher_id: str = "dc",
+    is_team: bool = False,
+    is_event: bool = False,
 ) -> None:
     # ── Valider la config Supabase avant tout (échec rapide) ────────────────
     supa = Supabase.from_env() if urls_only else None
@@ -646,8 +672,7 @@ async def run(
             if urls_only:
                 assert supa is not None
                 storage_path = f"{char_path}/{safe_ch}" if char_path else safe_ch
-                parts = char_path.split("/")
-                char_id = parts[1] if len(parts) > 1 else parts[0] if parts else ""
+                char_id = _char_id_from_path(char_path)
                 cover_url = await upload_chapter_to_supabase(
                     async_session, supa, chapter, storage_path
                 )
@@ -664,6 +689,8 @@ async def run(
                         char_id=char_id,
                         publisher_id=publisher_id,
                         library_path=library_path,
+                        is_team=is_team,
+                        is_event=is_event,
                     )
                 continue
 
@@ -747,9 +774,27 @@ def main() -> None:
         nargs="+",
         metavar="NAME",
         help=(
-            "Sous-dossier(s) dans data/pages/ pour organiser les comics. "
-            "Ex: --character greenlantern  →  pages/greenlantern/<slug>.json\n"
-            "    --character greenlantern geoffjohns  →  pages/greenlantern/geoffjohns/<slug>.json"
+            "Personnage : organise les comics sous <publisher>/<name>/…\n"
+            "Ex: --character greenlantern  →  dc/greenlantern/<volume>\n"
+            "    --character greenlantern geoffjohns  →  dc/greenlantern/geoffjohns/<volume>"
+        ),
+    )
+    parser.add_argument(
+        "--team",
+        nargs="+",
+        metavar="NAME",
+        help=(
+            "Équipe : organise les comics sous <publisher>/teams/<name>/…\n"
+            "Ex: --team justiceleague  →  dc/teams/justiceleague/<volume>"
+        ),
+    )
+    parser.add_argument(
+        "--event",
+        nargs="+",
+        metavar="NAME",
+        help=(
+            "Event : organise les comics sous <publisher>/events/<name>/…\n"
+            "Ex: --event crisisoninfiniteearths  →  dc/events/crisisoninfiniteearths/<volume>"
         ),
     )
     parser.add_argument(
@@ -759,13 +804,27 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.urls_only and not args.character:
-        parser.error("--character est requis avec --urls-only.\nEx: --character greenlantern  ou  --character greenlantern geoffjohns")
+    targets = sum(bool(x) for x in (args.character, args.team, args.event))
+    if targets > 1:
+        parser.error("Utilise un seul parmi --character, --team ou --event.")
+    if args.urls_only and targets == 0:
+        parser.error(
+            "--character, --team ou --event est requis avec --urls-only.\n"
+            "Ex: --character greenlantern  |  --team justiceleague  |  --event crisisoninfiniteearths"
+        )
 
     output_dir = Path(args.output).expanduser().resolve()
     pages_dir = Path(args.pages_dir).expanduser().resolve()
-    char_parts = [_safe(p.lower()) for p in args.character] if args.character else []
-    char_path = "/".join([args.publisher] + char_parts) if char_parts else ""
+    is_team = bool(args.team)
+    is_event = bool(args.event)
+    name_parts = [_safe(p.lower()) for p in (args.event or args.team or args.character or [])]
+    if is_team:
+        path_parts = ["teams"] + name_parts
+    elif is_event:
+        path_parts = ["events"] + name_parts
+    else:
+        path_parts = name_parts
+    char_path = "/".join([args.publisher] + path_parts) if path_parts else ""
 
     try:
         asyncio.run(run(
@@ -779,6 +838,8 @@ def main() -> None:
             pages_dir=pages_dir if args.urls_only else None,
             char_path=char_path,
             publisher_id=args.publisher,
+            is_team=is_team,
+            is_event=is_event,
         ))
     except KeyboardInterrupt:
         print("\nAnnulé.")
