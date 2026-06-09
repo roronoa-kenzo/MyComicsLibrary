@@ -310,7 +310,8 @@
           "description": "Des années plus tôt, Batman subit sa plus terrible défaite lorsque le Joker tua le second Robin, Jason Todd, à coups de barre à mine. Le Chevalier Noir a néanmoins réussi à poursuivre sa mission, épaulé par son précédent acolyte, Dick Grayson. Mais ce souvenir douloureux est ravivé lorsqu’un nouveau justicier, aux moyens expéditifs, débarque à Gotham. Instaurant l’effroi dans les rangs de la pègre, il utilise de plus l’ancien alias du Joker : Red Hood.",
           "storagePath": "dc/batman/lenigmederedhood/Volume 1",
           "pageCount": 504,
-          "pageExtension": "jpg"
+          "pageExtension": "jpg",
+          "period":"postinfinitecrisis"
         }
       ]
     },
