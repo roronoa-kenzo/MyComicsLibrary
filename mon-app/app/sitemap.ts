@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllPublishers, getPublisherCharacters } from "@/lib/library";
+import { getAllPublishers, getPublisherCatalog, getPublisherCharacters } from "@/lib/library";
 import { siteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -14,6 +14,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     });
+
+    if (publisher.comicsOnly) {
+      const catalog = getPublisherCatalog(publisher.id);
+      if (catalog) {
+        for (const comic of catalog.comics) {
+          entries.push({
+            url: `${base}/${publisher.id}/${catalog.id}/${comic.id}`,
+            changeFrequency: "monthly",
+            priority: 0.6,
+          });
+        }
+      }
+      continue;
+    }
 
     for (const character of getPublisherCharacters(publisher.id)) {
       entries.push({

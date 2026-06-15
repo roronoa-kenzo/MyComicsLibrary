@@ -1,8 +1,8 @@
 {
   "lastScraped": {
-    "publisherId": "dc",
-    "characterId": "batman",
-    "comicId": "dc-batman-lenigmederedhood"
+    "publisherId": "invincible",
+    "characterId": "invincible",
+    "comicId": "invincible-invincible-volume-2"
   },
   "publishers": [
     {
@@ -90,9 +90,160 @@
       "tagline": "La Maison des Idées depuis 1939",
       "gradientFrom": "#E23636",
       "gradientTo": "#3d0000"
+    },
+    {
+      "id": "invincible",
+      "name": "Invincible",
+      "tagline": "L'univers Image Comics de Robert Kirkman",
+      "gradientFrom": "#F5C518",
+      "gradientTo": "#1a1200",
+      "logo": "/invincible-logo.png",
+      "comicsOnly": true
     }
   ],
   "characters": [
+    {
+      "id": "invincible",
+      "publisherId": "invincible",
+      "name": "Invincible",
+      "realName": "",
+      "image": "/invincible-logo.png",
+      "isCatalog": true,
+      "comics": [
+        {
+          "id": "invincible-invincible-volume-1",
+          "title": "Invincible – Volume 1",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%201/0001.jpg",
+          "year": 2003,
+          "order": 1,
+          "description": "Mark Grayson est un lycéen normal qui habite dans une banlieue américaine banale. Rien d’exceptionnel n’arrive jamais jusqu’à ce qu’il fasse usage de ses nouveaux… super-pouvoirs ?! Le temps des révélations s’ouvre alors pour lui ! Il découvre que son père, Nolan, est le surpuissant super-héros Omni-Man, un extra-terrestre de la race des Vitrumites. Il va devoir être digne de cet héritage inattendu et assumer ses nouvelles responsabilités…",
+          "storagePath": "invincible/invincible/Volume 1",
+          "pageCount": 355,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-2",
+          "title": "Invincible – Volume 2",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%202/0001.jpg",
+          "year": 2004,
+          "order": 2,
+          "description": "Alors que Mark s'adapte à sa nouvelle vie de super-héros, les conséquences des révélations concernant Omni-Man bouleversent son existence. Entre menaces extraterrestres, nouvelles responsabilités et tensions familiales, Invincible doit trouver sa propre voie.",
+          "storagePath": "invincible/invincible/Volume 2",
+          "pageCount": 322,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-3",
+          "title": "Invincible – Volume 3",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%203/0001.jpg",
+          "year": 2004,
+          "order": 3,
+          "description": "Invincible fait face à des ennemis toujours plus puissants tandis que les secrets de l'Empire Viltrumite commencent à émerger. Les enjeux dépassent désormais largement la protection de la Terre et menacent l'équilibre de toute la galaxie.",
+          "storagePath": "invincible/invincible/Volume 3",
+          "pageCount": 298,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-4",
+          "title": "Invincible – Volume 4",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%204/0001.jpg",
+          "year": 2005,
+          "order": 4,
+          "description": "Mark poursuit son évolution en tant que héros tout en essayant de préserver sa vie personnelle. Mais les conflits avec les Viltrumites se rapprochent et chaque décision risque d'avoir des conséquences dramatiques pour ses proches.",
+          "storagePath": "invincible/invincible/Volume 4",
+          "pageCount": 277,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-5",
+          "title": "Invincible – Volume 5",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%205/0001.jpg",
+          "year": 2005,
+          "order": 5,
+          "description": "La guerre se profile à l'horizon alors que les forces viltrumites intensifient leur présence. Invincible doit repousser ses limites pour protéger la Terre face à des adversaires capables de rivaliser avec les plus grands héros de l'univers.",
+          "storagePath": "invincible/invincible/Volume 5",
+          "pageCount": 315,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-6",
+          "title": "Invincible – Volume 6",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%206/0001.jpg",
+          "year": 2006,
+          "order": 6,
+          "description": "Les batailles deviennent plus violentes et les sacrifices plus lourds. Entre alliances inattendues et menaces venues de l'espace, Mark découvre que le destin des Viltrumites est intimement lié au sien.",
+          "storagePath": "invincible/invincible/Volume 6",
+          "pageCount": 294,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-7",
+          "title": "Invincible – Volume 7",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%207/0001.jpg",
+          "year": 2006,
+          "order": 7,
+          "description": "Alors que l'univers est au bord du chaos, Invincible doit assumer un rôle de plus en plus important. Ses choix influenceront non seulement l'avenir de la Terre mais aussi celui de nombreuses civilisations galactiques.",
+          "storagePath": "invincible/invincible/Volume 7",
+          "pageCount": 323,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-8",
+          "title": "Invincible – Volume 8",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%208/0001.jpg",
+          "year": 2007,
+          "order": 8,
+          "description": "Les conflits s'étendent à travers la galaxie et mettent à l'épreuve toutes les convictions de Mark. Face à des ennemis impitoyables et à des décisions impossibles, Invincible doit déterminer quel genre de héros il souhaite devenir.",
+          "storagePath": "invincible/invincible/Volume 8",
+          "pageCount": 273,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-9",
+          "title": "Invincible – Volume 9",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%209/0001.jpg",
+          "year": 2008,
+          "order": 9,
+          "description": "Les conséquences des guerres passées continuent de se faire sentir tandis que de nouvelles menaces émergent. Mark tente de construire un avenir avec Atom Eve tout en restant au centre des plus grands événements de l'univers.",
+          "storagePath": "invincible/invincible/Volume 9",
+          "pageCount": 289,
+          "pageExtension": "jpg"
+        },
+        {
+          "id": "invincible-invincible-volume-10",
+          "title": "Invincible – Volume 10",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%2010/0001.webp",
+          "year": 2009,
+          "order": 10,
+          "description": "Le conflit contre Thragg et les Viltrumites atteint un nouveau niveau. Alliés et ennemis convergent vers une confrontation qui pourrait décider du sort de l'humanité et de l'Empire Viltrumite.",
+          "storagePath": "invincible/invincible/Volume 10",
+          "pageCount": 274,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "invincible-invincible-volume-11",
+          "title": "Invincible – Volume 11",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%2011/0001.webp",
+          "year": 2009,
+          "order": 11,
+          "description": "À l'approche du dénouement, Invincible rassemble ses alliés pour affronter les forces qui menacent l'univers. Les pertes s'accumulent et chaque bataille rapproche Mark de son affrontement final.",
+          "storagePath": "invincible/invincible/Volume 11",
+          "pageCount": 282,
+          "pageExtension": "webp"
+        },
+        {
+          "id": "invincible-invincible-volume-12",
+          "title": "Invincible – Volume 12",
+          "cover": "https://hfteijvcnmtvuxqxsqgq.supabase.co/storage/v1/object/public/comics/invincible/invincible/Volume%2012/0001.webp",
+          "year": 2010,
+          "order": 12,
+          "description": "Le récit final des aventures de Mark Grayson, alias Invincible, et d'Atom Eve s'étend d'un bout à l'autre de l'univers. Toutes les intrigues développées depuis plus de quinze ans convergent vers une ultime confrontation qui déterminera la fin de toutes choses.",
+          "storagePath": "invincible/invincible/Volume 12",
+          "pageCount": 315,
+          "pageExtension": "webp"
+        }
+      ]
+    },
     {
       "id": "greenlantern",
       "publisherId": "dc",
@@ -311,7 +462,7 @@
           "storagePath": "dc/batman/lenigmederedhood/Volume 1",
           "pageCount": 504,
           "pageExtension": "jpg",
-          "period":"postinfinitecrisis"
+          "period": "postinfinitecrisis"
         }
       ]
     },

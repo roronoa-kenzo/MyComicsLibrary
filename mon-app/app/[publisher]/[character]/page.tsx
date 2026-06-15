@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import PeriodBadge from "@/components/PeriodBadge";
-import { getCharacter, getComicPeriod, getPublisher } from "@/lib/library";
+import ComicsList from "@/components/ComicsList";
+import { getCharacter, getPublisher } from "@/lib/library";
 
 type Params = Promise<{ publisher: string; character: string }>;
 
@@ -38,7 +38,9 @@ export default async function CharacterPage({ params }: { params: Params }) {
 
   if (!publisher || !character) notFound();
 
-  const sortedComics = [...character.comics].sort((a, b) => a.order - b.order);
+  if (character.isCatalog) {
+    redirect(`/${publisherId}`);
+  }
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -99,72 +101,16 @@ export default async function CharacterPage({ params }: { params: Params }) {
       <section className="py-8 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-lg font-bold text-white mb-8">
-            {sortedComics.length} comic{sortedComics.length > 1 ? "s" : ""} disponible
-            {sortedComics.length > 1 ? "s" : ""}
+            {character.comics.length} comic{character.comics.length > 1 ? "s" : ""} disponible
+            {character.comics.length > 1 ? "s" : ""}
           </h2>
 
-          <div className="flex flex-col gap-6">
-            {sortedComics.map((comic) => {
-              const period = getComicPeriod(publisherId, comic);
-              return (
-              <div
-                key={comic.id}
-                className="group flex flex-col sm:flex-row gap-6 bg-zinc-900 rounded-2xl p-5 border border-white/5 hover:border-white/10 transition-all duration-200 hover:bg-zinc-900/80"
-              >
-                {/* Cover */}
-                <Link
-                  href={`/${publisherId}/${characterId}/${comic.id}`}
-                  className="flex-shrink-0"
-                >
-                  <div className="w-full sm:w-36 aspect-[2/3] rounded-lg overflow-hidden shadow-xl">
-                    <img
-                      src={comic.cover}
-                      alt={comic.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                </Link>
-
-                {/* Info */}
-                <div className="flex flex-col justify-between gap-4 flex-1">
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                      {period && <PeriodBadge period={period} />}
-                      <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">
-                        Vol. {comic.order}
-                      </span>
-                      {comic.year > 0 && (
-                        <>
-                          <span className="text-zinc-700">·</span>
-                          <span className="text-zinc-500 text-xs">{comic.year}</span>
-                        </>
-                      )}
-                    </div>
-                    <h3 className="text-white font-bold text-xl leading-tight mb-3">
-                      {comic.title}
-                    </h3>
-                    <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">
-                      {comic.description}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <Link
-                      href={`/${publisherId}/${characterId}/${comic.id}`}
-                      className="px-6 py-2.5 rounded-full text-sm font-bold text-black transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                      style={{ backgroundColor: publisher.gradientFrom }}
-                    >
-                      Lire →
-                    </Link>
-                    <span className="text-zinc-600 text-xs">
-                      {comic.pageCount} pages
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-            })}
-          </div>
+          <ComicsList
+            comics={character.comics}
+            publisherId={publisherId}
+            characterId={characterId}
+            accentColor={publisher.gradientFrom}
+          />
         </div>
       </section>
     </div>

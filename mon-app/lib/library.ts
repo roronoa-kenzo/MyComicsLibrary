@@ -28,6 +28,8 @@ export interface Character {
   isEvent?: boolean;
   // Équipe (ex. Justice League) : carrousel Équipes, même pages/comics.
   isTeam?: boolean;
+  // Catalogue direct (ex. Invincible) : comics sans carrousel personnages.
+  isCatalog?: boolean;
 }
 
 export interface Period {
@@ -42,6 +44,10 @@ export interface Publisher {
   tagline: string;
   gradientFrom: string;
   gradientTo: string;
+  // Logo dans public/ (défaut : /<id>.png).
+  logo?: string;
+  // Liste de comics uniquement, sans personnages / frise / events.
+  comicsOnly?: boolean;
   // Périodes éditoriales (Pre-Crisis, Post-Crisis, New 52…) avec leur couleur.
   periods?: Period[];
   // Frise chronologique : comics ordonnés, chacun rattaché à une période.
@@ -78,9 +84,23 @@ export function getPublisher(id: string): Publisher | undefined {
   return library.publishers.find((p) => p.id === id);
 }
 
+export function getPublisherLogo(publisher: Publisher): string {
+  return publisher.logo ?? `/${publisher.id}.png`;
+}
+
+export function getPublisherCatalog(publisherId: string): Character | undefined {
+  return library.characters.find(
+    (c) => c.publisherId === publisherId && c.isCatalog
+  );
+}
+
 export function getPublisherCharacters(publisherId: string): Character[] {
   return library.characters.filter(
-    (c) => c.publisherId === publisherId && !c.isEvent && !c.isTeam
+    (c) =>
+      c.publisherId === publisherId &&
+      !c.isEvent &&
+      !c.isTeam &&
+      !c.isCatalog
   );
 }
 

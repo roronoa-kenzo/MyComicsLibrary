@@ -1,6 +1,9 @@
 import Link from "next/link";
+import { getAllPublishers } from "@/lib/library";
 
 export default function Navbar() {
+  const publishers = getAllPublishers();
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-zinc-950/80 backdrop-blur-md border-b border-white/5">
       <Link href="/" className="flex items-center gap-2.5 group" aria-label="The Comic Book Day">
@@ -10,18 +13,15 @@ export default function Navbar() {
       </Link>
 
       <div className="flex items-center gap-6">
-        <Link
-          href="/dc"
-          className="text-zinc-400 hover:text-blue-400 text-sm font-medium transition-colors"
-        >
-          DC
-        </Link>
-        <Link
-          href="/marvel"
-          className="text-zinc-400 hover:text-red-400 text-sm font-medium transition-colors"
-        >
-          Marvel
-        </Link>
+        {publishers.map((publisher) => (
+          <Link
+            key={publisher.id}
+            href={`/${publisher.id}`}
+            className="text-zinc-400 hover:text-white text-sm font-medium transition-colors"
+          >
+            {publisher.id === "dc" ? "DC" : publisher.name}
+          </Link>
+        ))}
       </div>
     </nav>
   );

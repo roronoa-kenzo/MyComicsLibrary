@@ -3,12 +3,15 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import CharacterCarousel from "@/components/CharacterCarousel";
+import ComicsList from "@/components/ComicsList";
 import EventCards from "@/components/EventCards";
 import Timeline from "@/components/Timeline";
 import {
   getPublisher,
+  getPublisherCatalog,
   getPublisherCharacters,
   getPublisherEvents,
+  getPublisherLogo,
   getPublisherTeams,
   getPublisherTimeline,
 } from "@/lib/library";
@@ -25,14 +28,19 @@ export async function generateMetadata({
   if (!publisher) return {};
 
   const characters = getPublisherCharacters(publisherId);
+  const catalog = getPublisherCatalog(publisherId);
+  const comicCount = catalog?.comics.length ?? 0;
+  const description = publisher.comicsOnly
+    ? `${publisher.tagline} ${comicCount} comic${comicCount > 1 ? "s" : ""} disponible${comicCount > 1 ? "s" : ""} sur The Comic Book Day.`
+    : `${publisher.tagline} Découvre ${characters.length} personnage${characters.length > 1 ? "s" : ""} et leurs comics sur The Comic Book Day.`;
   return {
     title: `${publisher.name} – Comics en ligne`,
-    description: `${publisher.tagline} Découvre ${characters.length} personnage${characters.length > 1 ? "s" : ""} et leurs comics sur The Comic Book Day.`,
+    description,
     alternates: { canonical: `/${publisherId}` },
     openGraph: {
       title: `${publisher.name} | The Comic Book Day`,
       description: publisher.tagline,
-      images: [{ url: `/${publisherId}.png`, alt: publisher.name }],
+      images: [{ url: getPublisherLogo(publisher), alt: publisher.name }],
     },
   };
 }
@@ -44,9 +52,11 @@ export default async function PublisherPage({ params }: { params: Params }) {
   if (!publisher) notFound();
 
   const characters = getPublisherCharacters(publisherId);
+  const catalog = getPublisherCatalog(publisherId);
   const teams = getPublisherTeams(publisherId);
   const events = getPublisherEvents(publisherId);
   const timeline = getPublisherTimeline(publisherId);
+  const logo = getPublisherLogo(publisher);
 
   return (
     <div className="bg-zinc-950 min-h-screen">
@@ -77,7 +87,7 @@ export default async function PublisherPage({ params }: { params: Params }) {
 
           <div className="flex items-center gap-6">
             <img
-              src={`/${publisherId}.png`}
+              src={logo}
               alt={publisher.name}
               className="h-14 w-auto object-contain drop-shadow-xl flex-shrink-0"
             />
@@ -89,6 +99,32 @@ export default async function PublisherPage({ params }: { params: Params }) {
         </div>
       </section>
 
+      {publisher.comicsOnly && catalog ? (
+        <section className="py-10 px-6">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-xl font-bold text-white mb-2">Comics</h2>
+            <p className="text-zinc-500 text-sm mb-8">
+              {catalog.comics.length} comic
+              {catalog.comics.length > 1 ? "s" : ""} disponible
+              {catalog.comics.length > 1 ? "s" : ""}
+            </p>
+
+            {catalog.comics.length > 0 ? (
+              <ComicsList
+                comics={catalog.comics}
+                publisherId={publisherId}
+                characterId={catalog.id}
+                accentColor={publisher.gradientFrom}
+              />
+            ) : (
+              <p className="text-zinc-500 text-sm">
+                Aucun comic pour le moment. Les prochains ajouts apparaîtront ici.
+              </p>
+            )}
+          </div>
+        </section>
+      ) : (
+        <>
       {/* Characters carousel */}
       <section className="py-10 px-6">
         <div className="max-w-7xl mx-auto">
@@ -152,6 +188,8 @@ export default async function PublisherPage({ params }: { params: Params }) {
             <EventCards events={events} publisherId={publisherId} />
           </div>
         </section>
+      )}
+        </>
       )}
     </div>
   );

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import WebSiteJsonLd from "@/components/WebSiteJsonLd";
-import { getAllPublishers, getLastScraped } from "@/lib/library";
+import { getAllPublishers, getLastScraped, getPublisherLogo } from "@/lib/library";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -157,7 +157,9 @@ export default function Home() {
           <Link
             key={pub.id}
             href={`/${pub.id}`}
-            className="relative group overflow-hidden h-64 sm:h-80 flex items-center justify-center"
+            className={`relative group overflow-hidden flex items-center justify-center ${
+              pub.comicsOnly ? "h-64 sm:h-80 lg:h-96" : "h-64 sm:h-80"
+            }`}
             style={{
               background: `linear-gradient(135deg, ${pub.gradientFrom}, ${pub.gradientTo})`,
             }}
@@ -169,24 +171,34 @@ export default function Home() {
             <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
 
             {/* Content */}
-            <div className="relative z-10 flex flex-col items-center gap-3 text-white text-center px-6 transition-transform duration-300 group-hover:scale-105">
-              <img
-                src={`/${pub.id}.png`}
-                alt={pub.name}
-                className="h-16 sm:h-20 w-auto object-contain mb-2 drop-shadow-2xl"
-              />
-
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
-                {pub.name}
-              </h2>
-              <p className="text-white/60 text-sm">{pub.tagline}</p>
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-white/80 group-hover:text-white transition-colors">
-                <span>Découvrir les personnages</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
+            {pub.comicsOnly ? (
+              <div className="relative z-10 px-6 transition-transform duration-300 group-hover:scale-105">
+                <img
+                  src={getPublisherLogo(pub)}
+                  alt={pub.name}
+                  className="h-28 sm:h-36 lg:h-44 xl:h-48 w-auto max-w-[min(82vw,480px)] object-contain drop-shadow-2xl"
+                />
               </div>
-            </div>
+            ) : (
+              <div className="relative z-10 flex flex-col items-center gap-3 text-white text-center px-6 transition-transform duration-300 group-hover:scale-105">
+                <img
+                  src={getPublisherLogo(pub)}
+                  alt={pub.name}
+                  className="h-16 sm:h-20 w-auto object-contain mb-2 drop-shadow-2xl"
+                />
+
+                <h2 className="text-3xl sm:text-4xl font-black tracking-tight">
+                  {pub.name}
+                </h2>
+                <p className="text-white/60 text-sm">{pub.tagline}</p>
+                <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-white/80 group-hover:text-white transition-colors">
+                  <span>Découvrir les personnages</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </div>
+              </div>
+            )}
           </Link>
         ))}
       </section>
