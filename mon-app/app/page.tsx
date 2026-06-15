@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import HeroComicLink from "@/components/HeroComicLink";
 import WebSiteJsonLd from "@/components/WebSiteJsonLd";
 import { getAllPublishers, getLastScraped, getPublisherLogo } from "@/lib/library";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/seo";
@@ -58,13 +59,10 @@ export default function Home() {
                 {comic.description}
               </p>
 
-              <Link
+              <HeroComicLink
                 href={`/${publisher.id}/${character.id}/${comic.id}`}
-                className="self-start px-8 py-4 rounded-full font-bold text-black text-sm uppercase tracking-wider transition-all duration-200 hover:scale-105 hover:shadow-2xl"
-                style={{ backgroundColor: publisher.gradientFrom }}
-              >
-                Lire maintenant →
-              </Link>
+                accentColor={publisher.gradientFrom}
+              />
             </div>
 
             {/* Cover side */}

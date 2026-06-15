@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ComicLink from "@/components/ComicLink";
 import PeriodBadge from "@/components/PeriodBadge";
 import type { Comic } from "@/lib/library";
 import { getComicPeriod } from "@/lib/library";
@@ -27,7 +27,7 @@ export default function ComicsList({
             key={comic.id}
             className="group flex flex-col sm:flex-row gap-6 bg-zinc-900 rounded-2xl p-5 border border-white/5 hover:border-white/10 transition-all duration-200 hover:bg-zinc-900/80"
           >
-            <Link
+            <ComicLink
               href={`/${publisherId}/${characterId}/${comic.id}`}
               className="flex-shrink-0"
             >
@@ -38,7 +38,7 @@ export default function ComicsList({
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
-            </Link>
+            </ComicLink>
 
             <div className="flex flex-col justify-between gap-4 flex-1">
               <div>
@@ -63,13 +63,13 @@ export default function ComicsList({
               </div>
 
               <div className="flex items-center gap-4">
-                <Link
+                <ComicLink
                   href={`/${publisherId}/${characterId}/${comic.id}`}
                   className="px-6 py-2.5 rounded-full text-sm font-bold text-black transition-all duration-200 hover:scale-105 hover:shadow-lg"
                   style={{ backgroundColor: accentColor }}
                 >
                   Lire →
-                </Link>
+                </ComicLink>
                 <span className="text-zinc-600 text-xs">{comic.pageCount} pages</span>
               </div>
             </div>

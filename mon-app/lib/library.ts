@@ -125,6 +125,26 @@ export function getCharacter(
   );
 }
 
+export function getComicBackUrl(publisherId: string, characterId: string): string {
+  const publisher = getPublisher(publisherId);
+  const character = getCharacter(publisherId, characterId);
+  if (publisher?.comicsOnly || character?.isCatalog) {
+    return `/${publisherId}`;
+  }
+  return `/${publisherId}/${characterId}`;
+}
+
+/** Chemin de retour depuis ?from=… (anti open-redirect). */
+export function resolveComicBackUrl(
+  from: string | undefined,
+  fallback: string
+): string {
+  if (!from || !from.startsWith("/") || from.startsWith("//")) {
+    return fallback;
+  }
+  return from;
+}
+
 export function getComic(
   publisherId: string,
   characterId: string,

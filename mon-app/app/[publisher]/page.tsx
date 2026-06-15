@@ -170,7 +170,7 @@ export default async function PublisherPage({ params }: { params: Params }) {
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-4xl lg:max-w-5xl mx-auto">
             <Timeline items={timeline} publisherId={publisherId} />
           </div>
         </section>

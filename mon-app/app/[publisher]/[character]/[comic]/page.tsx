@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ComicReader from "@/components/ComicReader";
-import { getCharacter, getComic, getComicPages, getPublisher } from "@/lib/library";
+import { getCharacter, getComic, getComicBackUrl, getComicPages, getPublisher, resolveComicBackUrl } from "@/lib/library";
 
 type Params = Promise<{
   publisher: string;
   character: string;
   comic: string;
 }>;
+
+type SearchParams = Promise<{ from?: string }>;
 
 export async function generateMetadata({
   params,
@@ -35,8 +37,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function ComicPage({ params }: { params: Params }) {
+export default async function ComicPage({
+  params,
+  searchParams,
+}: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
   const { publisher: publisherId, character: characterId, comic: comicId } = await params;
+  const { from } = await searchParams;
 
   const publisher = getPublisher(publisherId);
   const character = getCharacter(publisherId, characterId);
@@ -45,12 +54,16 @@ export default async function ComicPage({ params }: { params: Params }) {
   if (!publisher || !character || !comic) notFound();
 
   const pages = getComicPages(comic);
-  const backUrl = `/${publisherId}/${characterId}`;
+  const backUrl = resolveComicBackUrl(from, getComicBackUrl(publisherId, characterId));
+  const title =
+    publisher.comicsOnly || character.isCatalog
+      ? comic.title
+      : `${character.name} · ${comic.title}`;
 
   return (
     <ComicReader
       pages={pages}
-      title={`${character.name} · ${comic.title}`}
+      title={title}
       backUrl={backUrl}
     />
   );

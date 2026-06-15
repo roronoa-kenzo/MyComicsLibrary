@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CSSProperties } from "react";
 import Link from "next/link";
+import ComicLink from "@/components/ComicLink";
 import PeriodBadge from "@/components/PeriodBadge";
 import type { TimelineItem } from "@/lib/library";
 
@@ -29,43 +30,59 @@ function TimelineEntry({
     : `/${publisherId}/${characterId}/${comic.id}`;
   const title = isEvent ? characterName : comic.title;
 
+  const cardContent = (
+    <>
+      <img
+        src={comic.cover}
+        alt={comic.title}
+        className="h-24 w-16 sm:h-28 sm:w-[4.5rem] lg:h-40 lg:w-28 flex-shrink-0 rounded-lg lg:rounded-xl object-cover shadow-lg"
+      />
+      <div className="flex flex-col justify-center gap-1.5 lg:gap-2">
+        {period && <PeriodBadge period={period} />}
+        <span className="text-zinc-500 text-xs lg:text-sm">
+          {isEvent ? "Event" : characterName}
+          {comic.year > 0 && ` · ${comic.year}`}
+        </span>
+        <h3 className="text-white text-base lg:text-xl font-bold leading-tight group-hover:underline">
+          {title}
+        </h3>
+      </div>
+    </>
+  );
+
   const lineStyle: CSSProperties = {
     backgroundColor: color,
-    top: isFirst ? "1.25rem" : 0,
-    ...(isLast ? { height: "1.25rem" } : { bottom: 0 }),
+    top: isFirst ? "1.5rem" : 0,
+    ...(isLast ? { height: "1.5rem" } : { bottom: 0 }),
   };
 
+  const cardClassName =
+    "group flex gap-4 lg:gap-6 rounded-2xl lg:rounded-3xl border border-white/5 bg-zinc-900/60 p-3 sm:p-4 lg:p-5 transition-colors hover:border-white/15 hover:bg-zinc-900";
+
   return (
-    <li className="relative pl-10 pb-6 last:pb-0">
+    <li className="relative pl-10 lg:pl-14 pb-6 lg:pb-8 last:pb-0">
       {total > 1 && (
-        <span aria-hidden className="absolute left-2 w-0.5" style={lineStyle} />
+        <span
+          aria-hidden
+          className="absolute left-2 lg:left-2.5 w-0.5 lg:w-1"
+          style={lineStyle}
+        />
       )}
       <span
         aria-hidden
-        className="absolute left-[1px] top-3 h-4 w-4 rounded-full ring-4 ring-zinc-950"
+        className="absolute left-0 lg:left-0.5 top-3 lg:top-5 h-4 w-4 lg:h-5 lg:w-5 rounded-full ring-4 lg:ring-[6px] ring-zinc-950"
         style={{ backgroundColor: color }}
       />
 
-      <Link
-        href={href}
-        className="group flex gap-4 rounded-2xl border border-white/5 bg-zinc-900/60 p-3 transition-colors hover:border-white/15 hover:bg-zinc-900"
-      >
-        <img
-          src={comic.cover}
-          alt={comic.title}
-          className="h-24 w-16 flex-shrink-0 rounded-lg object-cover shadow-lg"
-        />
-        <div className="flex flex-col justify-center gap-1.5">
-          {period && <PeriodBadge period={period} />}
-          <span className="text-zinc-500 text-xs">
-            {isEvent ? "Event" : characterName}
-            {comic.year > 0 && ` · ${comic.year}`}
-          </span>
-          <h3 className="text-white font-bold leading-tight group-hover:underline">
-            {title}
-          </h3>
-        </div>
-      </Link>
+      {isEvent ? (
+        <Link href={href} className={cardClassName}>
+          {cardContent}
+        </Link>
+      ) : (
+        <ComicLink href={href} className={cardClassName}>
+          {cardContent}
+        </ComicLink>
+      )}
     </li>
   );
 }
