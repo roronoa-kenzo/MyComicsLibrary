@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { isSupabaseCover } from "@/lib/cover-image";
 
 interface Props {
   src: string;
@@ -8,14 +9,6 @@ interface Props {
   className?: string;
   sizes?: string;
   priority?: boolean;
-}
-
-function isSupabaseCover(src: string): boolean {
-  try {
-    return new URL(src).hostname.endsWith(".supabase.co");
-  } catch {
-    return false;
-  }
 }
 
 export default function ComicCover({

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import ComicsList from "@/components/ComicsList";
 import { getCharacter, getPublisher } from "@/lib/library";
+import { getOpenGraphCoverUrl } from "@/lib/cover-image";
 
 type Params = Promise<{ publisher: string; character: string }>;
 
@@ -25,7 +26,9 @@ export async function generateMetadata({
     openGraph: {
       title: `${character.name} | The Comic Book Day`,
       description: character.comics[0]?.description ?? `${character.name} – ${publisher.name}`,
-      images: character.image ? [{ url: character.image, alt: character.name }] : undefined,
+      images: character.image
+        ? [{ url: getOpenGraphCoverUrl(character.image), alt: character.name }]
+        : undefined,
     },
   };
 }

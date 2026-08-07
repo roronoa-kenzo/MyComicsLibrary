@@ -9,6 +9,7 @@ import {
   getComicBackUrl,
   getPublisher,
 } from "@/lib/library";
+import { getOpenGraphCoverUrl } from "@/lib/cover-image";
 
 type Params = Promise<{
   publisher: string;
@@ -41,7 +42,7 @@ export async function generateMetadata({
       title: `${comic.title} | The Comic Book Day`,
       description: comic.description,
       type: "article",
-      images: [{ url: comic.cover, alt: comic.title }],
+      images: [{ url: getOpenGraphCoverUrl(comic.cover), alt: comic.title }],
     },
   };
 }

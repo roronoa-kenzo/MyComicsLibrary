@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ComicCover from "@/components/ComicCover";
+import HeroBackground from "@/components/HeroBackground";
 import Navbar from "@/components/Navbar";
 import HeroComicLink from "@/components/HeroComicLink";
 import WebSiteJsonLd from "@/components/WebSiteJsonLd";
@@ -26,11 +27,7 @@ export default function Home() {
       {/* ── Hero : dernier comic scrappé ── */}
       {hasHero && (
         <section className="relative min-h-screen flex items-center pt-20">
-          {/* Background cover blurred */}
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${comic.cover})` }}
-          />
+          <HeroBackground src={comic.cover} alt="" />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/95 to-zinc-950/60" />
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 py-20">

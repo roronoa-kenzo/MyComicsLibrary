@@ -458,6 +458,55 @@ def _looks_expired(blobs: list[bytes | None]) -> bool:
 
 UPLOAD_CONCURRENCY = 4
 UPLOAD_RETRIES = 4
+MAX_PAGE_WIDTH = 1200
+WEBP_QUALITY = 80
+
+
+def _optimize_page(data: bytes, filename: str) -> tuple[bytes, str]:
+    """Redimensionne et convertit en WebP pour réduire l'egress Supabase."""
+    try:
+        import io
+
+        from PIL import Image
+    except ImportError:
+        return data, filename
+
+    try:
+        img = Image.open(io.BytesIO(data))
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+        elif img.mode != "RGB":
+            img = img.convert("RGB")
+
+        width, height = img.size
+        if width > MAX_PAGE_WIDTH:
+            height = round(height * MAX_PAGE_WIDTH / width)
+            img = img.resize((MAX_PAGE_WIDTH, height), Image.Resampling.LANCZOS)
+
+        buf = io.BytesIO()
+        img.save(buf, format="WEBP", quality=WEBP_QUALITY, method=4)
+        stem = filename.rsplit(".", 1)[0]
+        return buf.getvalue(), f"{stem}.webp"
+    except Exception as exc:
+        print(f"  optimise SKIP {filename} – {exc}")
+        return data, filename
+
+
+def _prepare_upload_pages(
+    pages: list[Page],
+    blobs: list[bytes | None],
+) -> tuple[list[Page], list[bytes | None]]:
+    out_pages: list[Page] = []
+    out_blobs: list[bytes | None] = []
+    for page, blob in zip(pages, blobs):
+        if blob is None:
+            out_pages.append(page)
+            out_blobs.append(None)
+            continue
+        data, filename = _optimize_page(blob, page.filename)
+        out_pages.append(Page(url=page.url, filename=filename))
+        out_blobs.append(data)
+    return out_pages, out_blobs
 
 
 async def _upload_all(
@@ -514,6 +563,8 @@ async def upload_chapter_to_supabase(
             "Rafraîchis-le (relance un scrape ou --cookie cf_clearance=...) puis réessaie."
         )
 
+    pages, blobs = _prepare_upload_pages(chapter.pages, blobs)
+    chapter.pages = pages
     ok = await _upload_all(supa, chapter.pages, blobs, storage_prefix)
     print(f"  ✓ {ok}/{len(chapter.pages)} pages → {supa.bucket}/{storage_prefix}")
     return supa.public_url(f"{storage_prefix}/{chapter.pages[0].filename}")

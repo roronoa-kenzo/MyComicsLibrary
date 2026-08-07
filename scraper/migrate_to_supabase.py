@@ -25,6 +25,7 @@ from sushiscan import (
     _get_cf_clearance,
     _looks_expired,
     _make_async_session,
+    _prepare_upload_pages,
     _upload_all,
 )
 
@@ -57,6 +58,7 @@ async def _migrate_comic(
     blobs = await _download_all(dl_session, pages)
     if _looks_expired(blobs):
         return "", 0, len(pages)
+    pages, blobs = _prepare_upload_pages(pages, blobs)
     ok = await _upload_all(supa, pages, blobs, storage_path)
     cover = supa.public_url(f"{storage_path}/{pages[0].filename}")
     return cover, ok, len(pages)
@@ -125,7 +127,7 @@ async def main() -> None:
                 print(f"  ✓ {ok}/{total} pages → {supa.bucket}/{key}")
                 comic["storagePath"] = key
                 comic["pageCount"] = total
-                comic["pageExtension"] = urls[0].rsplit(".", 1)[-1]
+                comic["pageExtension"] = cover.rsplit(".", 1)[-1]
                 comic["cover"] = cover
                 comic.pop("pagesFile", None)
                 if char.get("image", "").startswith("/api/img"):
