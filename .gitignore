@@ -18,6 +18,7 @@ __pycache__/
 .env
 .env.local
 .env*.local
+scraper/.recompress_state.json
 
 # Session Cloudflare (cookie sensible, généré par le scraper)
 mon-app/data/cf_session.json
