@@ -13,5 +13,5 @@ export default function ComicLink({ href, ...props }: Props) {
   const separator = href.includes("?") ? "&" : "?";
   const url = `${href}${separator}from=${encodeURIComponent(pathname)}`;
 
-  return <Link href={url} {...props} />;
+  return <Link href={url} prefetch={false} {...props} />;
 }

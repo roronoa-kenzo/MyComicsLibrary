@@ -1,17 +1,42 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { resolveComicBackUrl } from "@/lib/comic-back-url";
+import { getComicPageUrl } from "@/lib/comic-pages";
+
+const PAGE_BUFFER = 4;
 
 interface Props {
-  pages: string[];
+  pageCount: number;
+  storagePath: string;
+  pageExtension: string;
   title: string;
-  backUrl: string;
+  fallbackBackUrl: string;
 }
 
-export default function ComicReader({ pages, title, backUrl }: Props) {
+export default function ComicReader({
+  pageCount,
+  storagePath,
+  pageExtension,
+  title,
+  fallbackBackUrl,
+}: Props) {
+  const searchParams = useSearchParams();
+  const backUrl = resolveComicBackUrl(
+    searchParams.get("from") ?? undefined,
+    fallbackBackUrl
+  );
+
   const [currentPage, setCurrentPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  const loadedRange = useMemo(() => {
+    const start = Math.max(1, currentPage - PAGE_BUFFER);
+    const end = Math.min(pageCount, currentPage + PAGE_BUFFER);
+    return { start, end };
+  }, [currentPage, pageCount]);
 
   const onPageVisible = useCallback((page: number) => {
     setCurrentPage(page);
@@ -20,27 +45,34 @@ export default function ComicReader({ pages, title, backUrl }: Props) {
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
+        let bestPage = 0;
+        let bestRatio = 0;
+
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const page = Number(entry.target.getAttribute("data-page"));
-            if (page) onPageVisible(page);
+          if (!entry.isIntersecting) continue;
+          const page = Number(entry.target.getAttribute("data-page"));
+          if (!page) continue;
+          if (entry.intersectionRatio >= bestRatio) {
+            bestRatio = entry.intersectionRatio;
+            bestPage = page;
           }
         }
+
+        if (bestPage) onPageVisible(bestPage);
       },
-      { threshold: 0.5 }
+      { threshold: [0.25, 0.5, 0.75] }
     );
 
     const elements = document.querySelectorAll("[data-page]");
     elements.forEach((el) => observerRef.current?.observe(el));
 
     return () => observerRef.current?.disconnect();
-  }, [onPageVisible]);
+  }, [onPageVisible, pageCount]);
 
-  const progress = Math.round((currentPage / pages.length) * 100);
+  const progress = Math.round((currentPage / pageCount) * 100);
 
   return (
     <div className="bg-black min-h-screen">
-      {/* Sticky top bar */}
       <div className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 bg-zinc-950/95 backdrop-blur-md border-b border-white/5">
         <Link
           href={backUrl}
@@ -55,7 +87,7 @@ export default function ComicReader({ pages, title, backUrl }: Props) {
             {title}
           </span>
           <span className="text-zinc-500 text-xs mt-0.5">
-            {currentPage} / {pages.length}
+            {currentPage} / {pageCount}
           </span>
         </div>
 
@@ -67,21 +99,37 @@ export default function ComicReader({ pages, title, backUrl }: Props) {
         </div>
       </div>
 
-      {/* Pages */}
       <div className="flex flex-col items-center">
-        {pages.map((url, i) => (
-          <img
-            key={url}
-            src={url}
-            alt={`Page ${i + 1}`}
-            data-page={i + 1}
-            className="w-full max-w-2xl block"
-            loading={i < 3 ? "eager" : "lazy"}
-          />
-        ))}
+        {Array.from({ length: pageCount }, (_, i) => {
+          const pageNum = i + 1;
+          const loaded =
+            pageNum >= loadedRange.start && pageNum <= loadedRange.end;
+
+          return (
+            <div
+              key={pageNum}
+              data-page={pageNum}
+              className="w-full max-w-2xl min-h-[50vh]"
+            >
+              {loaded ? (
+                <img
+                  src={getComicPageUrl(storagePath, pageExtension, pageNum)}
+                  alt={`Page ${pageNum}`}
+                  className="w-full block"
+                  loading={pageNum <= 3 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              ) : (
+                <div
+                  className="w-full aspect-[2/3] bg-zinc-900"
+                  aria-hidden
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      {/* Bottom end card */}
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <span className="text-zinc-500 text-sm">Fin du comic</span>
         <Link

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CSSProperties } from "react";
 import Link from "next/link";
+import ComicCover from "@/components/ComicCover";
 import ComicLink from "@/components/ComicLink";
 import PeriodBadge from "@/components/PeriodBadge";
 import type { TimelineItem } from "@/lib/library";
@@ -32,9 +33,12 @@ function TimelineEntry({
 
   const cardContent = (
     <>
-      <img
+      <ComicCover
         src={comic.cover}
         alt={comic.title}
+        width={112}
+        height={168}
+        sizes="(min-width: 1024px) 112px, (min-width: 640px) 72px, 64px"
         className="h-24 w-16 sm:h-28 sm:w-[4.5rem] lg:h-40 lg:w-28 flex-shrink-0 rounded-lg lg:rounded-xl object-cover shadow-lg"
       />
       <div className="flex flex-col justify-center gap-1.5 lg:gap-2">

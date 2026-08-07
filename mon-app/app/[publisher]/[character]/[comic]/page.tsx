@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import ComicReader from "@/components/ComicReader";
-import { getCharacter, getComic, getComicBackUrl, getComicPages, getPublisher, resolveComicBackUrl } from "@/lib/library";
+import {
+  getAllComicRoutes,
+  getCharacter,
+  getComic,
+  getComicBackUrl,
+  getPublisher,
+} from "@/lib/library";
 
 type Params = Promise<{
   publisher: string;
@@ -9,7 +16,9 @@ type Params = Promise<{
   comic: string;
 }>;
 
-type SearchParams = Promise<{ from?: string }>;
+export async function generateStaticParams() {
+  return getAllComicRoutes();
+}
 
 export async function generateMetadata({
   params,
@@ -37,15 +46,17 @@ export async function generateMetadata({
   };
 }
 
-export default async function ComicPage({
-  params,
-  searchParams,
-}: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const { publisher: publisherId, character: characterId, comic: comicId } = await params;
-  const { from } = await searchParams;
+function ComicReaderFallback({ title }: { title: string }) {
+  return (
+    <div className="bg-black min-h-screen flex items-center justify-center">
+      <p className="text-zinc-500 text-sm">{title}</p>
+    </div>
+  );
+}
+
+export default async function ComicPage({ params }: { params: Params }) {
+  const { publisher: publisherId, character: characterId, comic: comicId } =
+    await params;
 
   const publisher = getPublisher(publisherId);
   const character = getCharacter(publisherId, characterId);
@@ -53,18 +64,21 @@ export default async function ComicPage({
 
   if (!publisher || !character || !comic) notFound();
 
-  const pages = getComicPages(comic);
-  const backUrl = resolveComicBackUrl(from, getComicBackUrl(publisherId, characterId));
+  const fallbackBackUrl = getComicBackUrl(publisherId, characterId);
   const title =
     publisher.comicsOnly || character.isCatalog
       ? comic.title
       : `${character.name} · ${comic.title}`;
 
   return (
-    <ComicReader
-      pages={pages}
-      title={title}
-      backUrl={backUrl}
-    />
+    <Suspense fallback={<ComicReaderFallback title={title} />}>
+      <ComicReader
+        pageCount={comic.pageCount}
+        storagePath={comic.storagePath}
+        pageExtension={comic.pageExtension}
+        title={title}
+        fallbackBackUrl={fallbackBackUrl}
+      />
+    </Suspense>
   );
 }

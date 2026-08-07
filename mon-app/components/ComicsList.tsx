@@ -1,3 +1,4 @@
+import ComicCover from "@/components/ComicCover";
 import ComicLink from "@/components/ComicLink";
 import PeriodBadge from "@/components/PeriodBadge";
 import type { Comic } from "@/lib/library";
@@ -32,9 +33,12 @@ export default function ComicsList({
               className="flex-shrink-0"
             >
               <div className="w-full sm:w-36 aspect-[2/3] rounded-lg overflow-hidden shadow-xl">
-                <img
+                <ComicCover
                   src={comic.cover}
                   alt={comic.title}
+                  width={144}
+                  height={216}
+                  sizes="(min-width: 640px) 144px, 100vw"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>

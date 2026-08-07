@@ -229,7 +229,11 @@ async def _upload_bytes(
     resp = await up_session.post(
         f"{supa.url}/storage/v1/object/{supa.bucket}/{encoded}",
         data=data,
-        headers={"content-type": content_type, "x-upsert": "true"},
+        headers={
+            "content-type": content_type,
+            "x-upsert": "true",
+            "cache-control": "public, max-age=31536000, immutable",
+        },
     )
     resp.raise_for_status()
 

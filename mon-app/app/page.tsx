@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ComicCover from "@/components/ComicCover";
 import Navbar from "@/components/Navbar";
 import HeroComicLink from "@/components/HeroComicLink";
 import WebSiteJsonLd from "@/components/WebSiteJsonLd";
@@ -74,9 +75,13 @@ export default function Home() {
                   boxShadow: `0 30px 60px rgba(0,0,0,0.8), 0 0 40px ${publisher.gradientFrom}33`,
                 }}
               >
-                <img
+                <ComicCover
                   src={comic.cover}
                   alt={comic.title}
+                  width={320}
+                  height={480}
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 288px, 256px"
+                  priority
                   className="w-full h-full object-cover"
                 />
               </div>

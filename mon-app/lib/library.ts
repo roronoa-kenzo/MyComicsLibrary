@@ -1,5 +1,9 @@
 import "server-only";
 import libraryData from "@/data/library.json";
+import { resolveComicBackUrl } from "@/lib/comic-back-url";
+import { getComicPageUrl, supabasePublicUrl } from "@/lib/comic-pages";
+
+export { resolveComicBackUrl };
 
 export interface Comic {
   id: string;
@@ -134,17 +138,6 @@ export function getComicBackUrl(publisherId: string, characterId: string): strin
   return `/${publisherId}/${characterId}`;
 }
 
-/** Chemin de retour depuis ?from=… (anti open-redirect). */
-export function resolveComicBackUrl(
-  from: string | undefined,
-  fallback: string
-): string {
-  if (!from || !from.startsWith("/") || from.startsWith("//")) {
-    return fallback;
-  }
-  return from;
-}
-
 export function getComic(
   publisherId: string,
   characterId: string,
@@ -211,25 +204,24 @@ export function getLastScraped(): {
   return { publisher, character, comic };
 }
 
-function encodePath(storagePath: string): string {
-  return storagePath.split("/").map(encodeURIComponent).join("/");
-}
+export { supabasePublicUrl };
 
-export function supabasePublicUrl(key: string): string {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const bucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
-  if (!base || !bucket) {
-    throw new Error(
-      "Variables Supabase manquantes : définis NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_BUCKET (.env.local en local, Environment Variables sur Vercel)."
-    );
-  }
-  return `${base}/storage/v1/object/public/${bucket}/${encodePath(key)}`;
+export function getAllComicRoutes(): {
+  publisher: string;
+  character: string;
+  comic: string;
+}[] {
+  return library.characters.flatMap((character) =>
+    character.comics.map((comic) => ({
+      publisher: character.publisherId,
+      character: character.id,
+      comic: comic.id,
+    }))
+  );
 }
 
 export function getComicPages(comic: Comic): string[] {
   return Array.from({ length: comic.pageCount }, (_, i) =>
-    supabasePublicUrl(
-      `${comic.storagePath}/${String(i + 1).padStart(4, "0")}.${comic.pageExtension}`
-    )
+    getComicPageUrl(comic.storagePath, comic.pageExtension, i + 1)
   );
 }
