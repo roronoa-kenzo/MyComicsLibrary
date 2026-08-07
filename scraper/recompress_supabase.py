@@ -37,6 +37,7 @@ from sushiscan import (
 
 ROOT = Path(__file__).parent.parent / "mon-app"
 LIBRARY = ROOT / "data" / "library.json"
+MAINTENANCE = ROOT / "data" / "maintenance.json"
 STATE_FILE = Path(__file__).parent / ".recompress_state.json"
 
 DOWNLOAD_CONCURRENCY = 8
@@ -53,6 +54,13 @@ def _load_state() -> set[str]:
 def _save_state(completed: set[str]) -> None:
     STATE_FILE.write_text(
         json.dumps({"completed": sorted(completed)}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _set_maintenance(enabled: bool) -> None:
+    MAINTENANCE.write_text(
+        json.dumps({"enabled": enabled}, indent=2) + "\n",
         encoding="utf-8",
     )
 
@@ -217,6 +225,9 @@ async def run(args: argparse.Namespace) -> int:
         print("Dry-run terminé – aucune modification.")
         return 0
 
+    _set_maintenance(True)
+    print("⚠ Maintenance activée (data/maintenance.json).\n")
+
     supa = Supabase.from_env()
     dl_session = curl_cffi.AsyncSession(impersonate="chrome", verify=_verify_ssl())
     up_session = supa.make_session()
@@ -241,7 +252,7 @@ async def run(args: argparse.Namespace) -> int:
 
             print()
 
-        if library_changed and not args.dry_run:
+        if library_changed:
             LIBRARY.write_text(
                 json.dumps(data, indent=2, ensure_ascii=False) + "\n",
                 encoding="utf-8",
@@ -252,6 +263,15 @@ async def run(args: argparse.Namespace) -> int:
             res = session.close()
             if asyncio.iscoroutine(res):
                 await res
+
+        if errors == 0:
+            _set_maintenance(False)
+            print("✓ Maintenance désactivée")
+        else:
+            print(
+                "⚠ Maintenance laissée active (erreurs). "
+                "Passe maintenance.json à enabled: false."
+            )
 
     if errors:
         print(f"\n⚠ {errors} comic(s) en échec")
