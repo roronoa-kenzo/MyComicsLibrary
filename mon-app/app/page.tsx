@@ -26,9 +26,12 @@ export default function Home() {
 
       {/* ── Hero : dernier comic scrappé ── */}
       {hasHero && (
-        <section className="relative min-h-screen flex items-center pt-20">
-          <HeroBackground src={comic.cover} alt="" />
+        <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
+          <div className="absolute inset-0 overflow-hidden">
+            <HeroBackground src={comic.cover} alt="" />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/95 to-zinc-950/60" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-zinc-950 to-transparent" />
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center gap-12 py-20">
             {/* Text side */}

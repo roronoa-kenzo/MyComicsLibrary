@@ -18,14 +18,16 @@ export default function HeroBackground({ src, alt }: Props) {
   }
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      fill
-      priority
-      sizes="100vw"
-      className="object-cover scale-110 blur-sm"
-      aria-hidden
-    />
+    <div className="relative h-full w-full">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover scale-110 blur-sm"
+        aria-hidden
+      />
+    </div>
   );
 }
