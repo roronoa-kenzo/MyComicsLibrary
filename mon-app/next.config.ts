@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/webp"],
+    minimumCacheTTL: 2678400, // 31 j — les pages comics ne changent pas
     remotePatterns: [
       {
         protocol: "https",

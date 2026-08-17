@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import ComicPageImage from "@/components/ComicPageImage";
 import { resolveComicBackUrl } from "@/lib/comic-back-url";
 import { getComicPageUrl } from "@/lib/comic-pages";
 
@@ -112,12 +113,10 @@ export default function ComicReader({
               className="w-full max-w-2xl min-h-[50vh]"
             >
               {loaded ? (
-                <img
+                <ComicPageImage
                   src={getComicPageUrl(storagePath, pageExtension, pageNum)}
-                  alt={`Page ${pageNum}`}
-                  className="w-full block"
-                  loading={pageNum <= 3 ? "eager" : "lazy"}
-                  decoding="async"
+                  pageNum={pageNum}
+                  priority={pageNum <= 2}
                 />
               ) : (
                 <div
