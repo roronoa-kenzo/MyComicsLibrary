@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
-import CharacterCarousel from "@/components/CharacterCarousel";
+import CharacterGrid from "@/components/CharacterGrid";
 import ComicsList from "@/components/ComicsList";
 import EventCards from "@/components/EventCards";
+import SectionHeading from "@/components/SectionHeading";
 import Timeline from "@/components/Timeline";
 import {
   getPublisher,
@@ -92,22 +93,24 @@ export default async function PublisherPage({ params }: { params: Params }) {
               className="h-14 w-auto object-contain drop-shadow-xl flex-shrink-0"
             />
             <div>
-              <h1 className="text-4xl font-black text-white">{publisher.name}</h1>
-              <p className="text-zinc-400 text-sm mt-1">{publisher.tagline}</p>
+              <h1 className="text-4xl font-black uppercase leading-[0.85] tracking-tighter text-white sm:text-5xl lg:text-6xl">
+                {publisher.name}
+              </h1>
+              <p className="mt-3 text-sm text-zinc-400">{publisher.tagline}</p>
             </div>
           </div>
         </div>
       </section>
 
       {publisher.comicsOnly && catalog ? (
-        <section className="py-10 px-6">
+        <section className="px-6 py-14 lg:py-20">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-xl font-bold text-white mb-2">Comics</h2>
-            <p className="text-zinc-500 text-sm mb-8">
-              {catalog.comics.length} comic
-              {catalog.comics.length > 1 ? "s" : ""} disponible
-              {catalog.comics.length > 1 ? "s" : ""}
-            </p>
+            <SectionHeading
+              eyebrow="Catalogue"
+              title="Comics"
+              meta={`${catalog.comics.length} volume${catalog.comics.length > 1 ? "s" : ""}`}
+              accentColor={publisher.gradientFrom}
+            />
 
             {catalog.comics.length > 0 ? (
               <ComicsList
@@ -125,70 +128,76 @@ export default async function PublisherPage({ params }: { params: Params }) {
         </section>
       ) : (
         <>
-      {/* Characters carousel */}
-      <section className="py-10 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-xl font-bold text-white mb-2">Personnages</h2>
-          <p className="text-zinc-500 text-sm mb-6">
-            {characters.length} personnage{characters.length > 1 ? "s" : ""} disponible
-            {characters.length > 1 ? "s" : ""}
-          </p>
+          {characters.length > 0 && (
+            <section className="px-6 py-14 lg:py-20">
+              <div className="max-w-7xl mx-auto">
+                <SectionHeading
+                  eyebrow="Héros"
+                  title="Personnages"
+                  meta={`${characters.length} personnage${characters.length > 1 ? "s" : ""}`}
+                  accentColor={publisher.gradientFrom}
+                />
 
-          <CharacterCarousel
-            characters={characters}
-            publisherId={publisherId}
-            accentColor={publisher.gradientFrom}
-          />
-        </div>
-      </section>
+                <CharacterGrid
+                  characters={characters}
+                  publisherId={publisherId}
+                  accentColor={publisher.gradientFrom}
+                />
+              </div>
+            </section>
+          )}
 
-      {teams.length > 0 && (
-        <section className="py-10 px-6 border-t border-white/5">
-          <div className="max-w-7xl mx-auto">
-            <h2 className="text-xl font-bold text-white mb-2">Équipes</h2>
-            <p className="text-zinc-500 text-sm mb-6">
-              {teams.length} équipe{teams.length > 1 ? "s" : ""} disponible
-              {teams.length > 1 ? "s" : ""}
-            </p>
+          {teams.length > 0 && (
+            <section className="border-t border-white/5 px-6 py-14 lg:py-20">
+              <div className="max-w-7xl mx-auto">
+                <SectionHeading
+                  eyebrow="Collectifs"
+                  title="Équipes"
+                  meta={`${teams.length} équipe${teams.length > 1 ? "s" : ""}`}
+                  accentColor={publisher.gradientFrom}
+                />
 
-            <CharacterCarousel
-              characters={teams}
-              publisherId={publisherId}
-              accentColor={publisher.gradientFrom}
-              emptyMessage="Aucune équipe définie pour cet éditeur."
-            />
-          </div>
-        </section>
-      )}
+                <CharacterGrid
+                  characters={teams}
+                  publisherId={publisherId}
+                  accentColor={publisher.gradientFrom}
+                  wide
+                />
+              </div>
+            </section>
+          )}
 
-      {timeline.length > 0 && (
-        <section className="py-10 px-6 border-t border-white/5">
-          <div className="max-w-7xl mx-auto mb-6">
-            <h2 className="text-xl font-bold text-white mb-2">Chronologie</h2>
-            <p className="text-zinc-500 text-sm">
-              L&apos;ordre de lecture des comics {publisher.name}.
-            </p>
-          </div>
+          {timeline.length > 0 && (
+            <section className="border-t border-white/5 px-6 py-14 lg:py-20">
+              <div className="max-w-7xl mx-auto">
+                <SectionHeading
+                  eyebrow="Ordre de lecture"
+                  title="Chronologie"
+                  meta={`${timeline.length} étape${timeline.length > 1 ? "s" : ""}`}
+                  accentColor={publisher.gradientFrom}
+                />
+              </div>
 
-          <div className="max-w-4xl lg:max-w-5xl mx-auto">
-            <Timeline items={timeline} publisherId={publisherId} />
-          </div>
-        </section>
-      )}
+              <div className="max-w-4xl lg:max-w-5xl mx-auto">
+                <Timeline items={timeline} publisherId={publisherId} />
+              </div>
+            </section>
+          )}
 
-      {events.length > 0 && (
-        <section className="py-10 px-6 border-t border-white/5">
-          <div className="max-w-7xl mx-auto text-left">
-            <h2 className="text-xl font-bold text-white mb-2">Events</h2>
-            <p className="text-zinc-500 text-sm mb-6">
-              {events.length} crossover{events.length > 1 ? "s" : ""} disponible
-              {events.length > 1 ? "s" : ""}
-            </p>
+          {events.length > 0 && (
+            <section className="border-t border-white/5 px-6 py-14 lg:py-20">
+              <div className="max-w-7xl mx-auto">
+                <SectionHeading
+                  eyebrow="Crossovers"
+                  title="Events"
+                  meta={`${events.length} event${events.length > 1 ? "s" : ""}`}
+                  accentColor={publisher.gradientFrom}
+                />
 
-            <EventCards events={events} publisherId={publisherId} />
-          </div>
-        </section>
-      )}
+                <EventCards events={events} publisherId={publisherId} />
+              </div>
+            </section>
+          )}
         </>
       )}
     </div>
