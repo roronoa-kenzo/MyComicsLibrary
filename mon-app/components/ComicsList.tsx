@@ -26,42 +26,47 @@ export default function ComicsList({
         return (
           <div
             key={comic.id}
-            className="group flex flex-col sm:flex-row gap-6 bg-zinc-900 rounded-2xl p-5 border border-white/5 hover:border-white/10 transition-all duration-200 hover:bg-zinc-900/80"
+            className="group relative flex flex-col gap-6 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/60 p-5 transition-colors duration-200 hover:border-white/25 hover:bg-zinc-900 sm:flex-row lg:p-6"
           >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-2 right-4 text-6xl font-black tracking-tighter text-white/5 lg:text-8xl"
+            >
+              {String(comic.order).padStart(2, "0")}
+            </span>
+
             <ComicLink
               href={`/${publisherId}/${characterId}/${comic.id}`}
               className="flex-shrink-0"
             >
-              <div className="w-full sm:w-36 aspect-[2/3] rounded-lg overflow-hidden shadow-xl">
+              <div className="aspect-[2/3] w-full overflow-hidden rounded-2xl shadow-xl sm:w-36 lg:w-40">
                 <ComicCover
                   src={comic.cover}
                   alt={comic.title}
-                  width={144}
-                  height={216}
-                  sizes="(min-width: 640px) 144px, 100vw"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={160}
+                  height={240}
+                  sizes="(min-width: 1024px) 160px, (min-width: 640px) 144px, 100vw"
+                  className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
               </div>
             </ComicLink>
 
-            <div className="flex flex-col justify-between gap-4 flex-1">
+            <div className="relative flex flex-1 flex-col justify-between gap-4">
               <div>
-                <div className="flex flex-wrap items-center gap-2 mb-2">
+                <div className="mb-3 flex flex-wrap items-center gap-2">
                   {period && <PeriodBadge period={period} />}
-                  <span className="text-xs font-bold text-zinc-600 uppercase tracking-widest">
-                    Vol. {comic.order}
-                  </span>
                   {comic.year > 0 && (
-                    <>
-                      <span className="text-zinc-700">·</span>
-                      <span className="text-zinc-500 text-xs">{comic.year}</span>
-                    </>
+                    <span className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                      {comic.year}
+                    </span>
                   )}
                 </div>
-                <h3 className="text-white font-bold text-xl leading-tight mb-3">
+
+                <h3 className="mb-3 text-2xl font-black uppercase leading-[0.95] tracking-tight text-white lg:text-3xl">
                   {comic.title}
                 </h3>
-                <p className="text-zinc-400 text-sm leading-relaxed line-clamp-4">
+
+                <p className="line-clamp-4 text-sm leading-relaxed text-zinc-400">
                   {comic.description}
                 </p>
               </div>
@@ -69,12 +74,12 @@ export default function ComicsList({
               <div className="flex items-center gap-4">
                 <ComicLink
                   href={`/${publisherId}/${characterId}/${comic.id}`}
-                  className="px-6 py-2.5 rounded-full text-sm font-bold text-black transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                  className="cursor-pointer rounded-full px-6 py-2.5 text-sm font-bold uppercase tracking-wider text-black transition-opacity duration-200 hover:opacity-85"
                   style={{ backgroundColor: accentColor }}
                 >
-                  Lire →
+                  Lire
                 </ComicLink>
-                <span className="text-zinc-600 text-xs">{comic.pageCount} pages</span>
+                <span className="text-xs text-zinc-500">{comic.pageCount} pages</span>
               </div>
             </div>
           </div>

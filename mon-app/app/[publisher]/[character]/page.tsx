@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import ComicCover from "@/components/ComicCover";
 import ComicsList from "@/components/ComicsList";
+import SectionHeading from "@/components/SectionHeading";
 import { getCharacter, getPublisher } from "@/lib/library";
 import { getOpenGraphCoverUrl } from "@/lib/cover-image";
 
@@ -45,74 +47,124 @@ export default async function CharacterPage({ params }: { params: Params }) {
     redirect(`/${publisherId}`);
   }
 
+  const accent = publisher.gradientFrom;
+  const comicCount = character.comics.length;
+  const pageCount = character.comics.reduce((total, c) => total + c.pageCount, 0);
+
   return (
     <div className="bg-zinc-950 min-h-screen">
       <Navbar />
 
-      {/* Character header */}
-      <section className="relative pt-20 pb-8 overflow-hidden">
+      <header className="relative overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0">
+          <ComicCover
+            src={character.image}
+            alt=""
+            width={1600}
+            height={900}
+            sizes="100vw"
+            className="absolute inset-0 h-full w-full scale-105 object-cover object-center opacity-40 blur-[3px]"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/85 to-zinc-950/75" />
         <div
-          className="absolute inset-0 opacity-15"
+          className="absolute inset-0"
           style={{
-            background: `radial-gradient(ellipse at 20% 50%, ${publisher.gradientFrom}66, transparent 60%)`,
+            background: `radial-gradient(ellipse at 10% 0%, ${accent}40, transparent 65%)`,
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-zinc-950 pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-10">
-          <div className="flex items-center gap-2 text-sm mb-8">
-            <Link href="/" className="text-zinc-500 hover:text-white transition-colors">
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pb-12 pt-28 lg:px-12 lg:pb-16 lg:pt-36">
+          <nav
+            aria-label="Fil d'Ariane"
+            className="mb-10 flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.2em]"
+          >
+            <Link href="/" className="text-zinc-500 transition-colors hover:text-white">
               Accueil
             </Link>
-            <span className="text-zinc-700">›</span>
+            <span aria-hidden className="text-zinc-700">
+              /
+            </span>
             <Link
               href={`/${publisherId}`}
-              className="text-zinc-500 hover:text-white transition-colors"
+              className="text-zinc-500 transition-colors hover:text-white"
             >
               {publisher.name}
             </Link>
-            <span className="text-zinc-700">›</span>
+            <span aria-hidden className="text-zinc-700">
+              /
+            </span>
             <span className="text-zinc-300">{character.name}</span>
-          </div>
+          </nav>
 
-          <div className="flex items-center gap-8">
-            <div
-              className="w-24 h-24 rounded-full overflow-hidden flex-shrink-0"
-              style={{ boxShadow: `0 0 0 4px ${publisher.gradientFrom}` }}
-            >
-              <img
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0">
+              <span
+                className="mb-4 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em]"
+                style={{ color: accent }}
+              >
+                <span className="h-px w-8" style={{ backgroundColor: accent }} />
+                {publisher.name}
+              </span>
+
+              <h1 className="text-5xl font-black uppercase leading-[0.82] tracking-tighter text-white sm:text-7xl lg:text-8xl">
+                {character.name}
+              </h1>
+
+              {character.realName && (
+                <p className="mt-5 text-sm uppercase tracking-[0.25em] text-zinc-400">
+                  {character.realName}
+                </p>
+              )}
+
+              <dl className="mt-8 flex flex-wrap items-center gap-x-10 gap-y-4">
+                <div>
+                  <dt className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                    Comics
+                  </dt>
+                  <dd className="mt-1 text-3xl font-black tracking-tight text-white">
+                    {comicCount}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                    Pages
+                  </dt>
+                  <dd className="mt-1 text-3xl font-black tracking-tight text-white">
+                    {pageCount.toLocaleString("fr-FR")}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="hidden w-56 flex-shrink-0 overflow-hidden rounded-3xl border border-white/15 shadow-2xl shadow-black/50 lg:block">
+              <ComicCover
                 src={character.image}
                 alt={character.name}
-                className="w-full h-full object-cover"
+                width={448}
+                height={560}
+                sizes="224px"
+                className="aspect-[4/5] w-full object-cover"
               />
-            </div>
-            <div>
-              <p
-                className="text-sm font-bold uppercase tracking-widest mb-1"
-                style={{ color: publisher.gradientFrom }}
-              >
-                {publisher.name}
-              </p>
-              <h1 className="text-4xl font-black text-white">{character.name}</h1>
-              <p className="text-zinc-400 mt-1">{character.realName}</p>
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Comics list */}
-      <section className="py-8 px-6">
+      <section className="px-6 py-14 lg:py-20">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-lg font-bold text-white mb-8">
-            {character.comics.length} comic{character.comics.length > 1 ? "s" : ""} disponible
-            {character.comics.length > 1 ? "s" : ""}
-          </h2>
+          <SectionHeading
+            eyebrow="Bibliographie"
+            title="Comics"
+            meta={`${comicCount} volume${comicCount > 1 ? "s" : ""}`}
+            accentColor={accent}
+          />
 
           <ComicsList
             comics={character.comics}
             publisherId={publisherId}
             characterId={characterId}
-            accentColor={publisher.gradientFrom}
+            accentColor={accent}
           />
         </div>
       </section>
